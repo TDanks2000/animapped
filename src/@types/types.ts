@@ -81,11 +81,7 @@ export type Anime = {
   trailer: string | null;
   status: MediaStatus | null;
   season: Season;
-  title: {
-    romaji: string | null;
-    english: string | null;
-    native: string | null;
-  };
+  title: ITitleLanguageOptions;
   currentEpisode: number | null;
   mappings: { id: string; providerId: string; similarity: number }[];
   synonyms: string[];
@@ -111,3 +107,14 @@ export type Anime = {
   totalEpisodes?: number;
   tags: string[];
 };
+
+export type TitleLanguageOptions = "english" | "native" | "romanji" | "userPreferred";
+
+export interface ITitleLanguageOptions {
+  english?: string;
+  romaji: string;
+  native: string;
+  userPreferred: string;
+}
+
+export type TitleType = string | ITitleLanguageOptions;

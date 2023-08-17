@@ -1,5 +1,13 @@
 import { CoverImage } from "./../../../node_modules/@tdanks2000/anilist-wrapper/dist/types/index.d";
-import { AnimeModuleInfo, BaseMetaModule, Format, Genres, ModuleIds, Season } from "../../@types";
+import {
+  AnimeModuleInfo,
+  BaseMetaModule,
+  Format,
+  Genres,
+  ITitleLanguageOptions,
+  ModuleIds,
+  Season,
+} from "../../@types";
 import { Anilist as AnilistWrapper } from "@tdanks2000/anilist-wrapper";
 
 const anilist = new AnilistWrapper();
@@ -17,7 +25,7 @@ class Anilist extends BaseMetaModule {
 
     data?.data?.Page?.media.forEach((item) => {
       searchResults.push({
-        title: item?.title,
+        title: item?.title as ITitleLanguageOptions,
         synonyms: [],
         currentEpisode: item?.episodes,
         bannerImage: item?.bannerImage,

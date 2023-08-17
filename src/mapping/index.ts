@@ -2,17 +2,19 @@ import "dotenv/config";
 
 import Kickassanime from "../modules/anime/kickassanime";
 import Anilist from "../modules/meta/anilist";
-import { getId } from "./utils";
+import { getId, matchMedia } from "./utils";
 import { closest, distance } from "fastest-levenshtein";
+import { getTitle } from "../utils";
 
 class Mapping {
   last_id: string = "0";
-
-  constructor() {}
+  last_id_index: number = 0;
+  anilist: Anilist = new Anilist();
+  kaa: Kickassanime = new Kickassanime();
 
   protected async init() {
     this.last_id = await getId();
-    console.log(this.last_id);
+    this.last_id_index = (await getId("index")) + 1;
   }
 
   static async create() {
@@ -21,39 +23,27 @@ class Mapping {
     return mapping;
   }
 
-  async start() {
-    const anilist = new Anilist();
-    const kaa = new Kickassanime();
+  async match(searchFrom: any, title: string) {
+    const testingTo = await this.kaa.search(title);
 
-    const searchFrom = await anilist.getMedia(this.last_id);
-    let searchFromTitle = searchFrom!.title.english! ?? searchFrom!.title?.romaji;
-    searchFromTitle = searchFromTitle?.toLowerCase();
+    let match = await matchMedia(searchFrom!, testingTo!);
+
+    return match;
+  }
+
+  async start() {
+    const searchFrom = await this.anilist.getMedia(this.last_id);
+    let searchFromTitle = getTitle(searchFrom!.title);
 
     if (!searchFromTitle?.length) return null;
 
-    const testingTo = await kaa.search(searchFromTitle);
-
-    let match = null;
-
-    for await (const item of testingTo!) {
-      const distanceFrom = distance(searchFromTitle, item.title.toLowerCase());
-      console.log(
-        `kaa: ${item.title} \nanilist: ${searchFromTitle} \ndistance: ${distanceFrom} | max: ${process.env.DISTANCE}`
-      );
-      if (distanceFrom <= parseInt(process.env.DISTANCE!)) {
-        match = item;
-        break;
-      }
-      continue;
-    }
-    console.log(match);
-    return match;
+    return await this.match(searchFrom, searchFromTitle!);
   }
 }
 
 (async () => {
   const mapping = await Mapping.create();
-  await mapping.start();
+  console.log(await mapping.start());
   console.log("done");
 })();
 
