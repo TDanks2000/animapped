@@ -1,0 +1,18 @@
+{
+  "gogoanime": {
+    "fullmetal-alchemist-brotherhood": {
+      "id": "fullmetal-alchemist-brotherhood",
+      "title": "Fullmetal Alchemist: Brotherhood"
+    },
+    "fullmetal-alchemist-brotherhood-dub": {
+      "id": "fullmetal-alchemist-brotherhood-dub",
+      "title": "Fullmetal Alchemist: Brotherhood (Dub)"
+    }
+  },
+  "kickassanime": {
+    "fullmetal-alchemist-brotherhood-2fe4": {
+      "id": "fullmetal-alchemist-brotherhood-2fe4",
+      "title": "Fullmetal Alchemist: Brotherhood"
+    }
+  }
+}

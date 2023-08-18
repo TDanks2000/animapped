@@ -1,3 +1,5 @@
+import { BaseAnimeModule } from "./BaseAnimeModule";
+import { BaseMetaModule } from "./BaseMetaModule";
 import { ModuleIds } from "./Modules";
 
 export const enum VoiceType {
@@ -118,3 +120,8 @@ export interface ITitleLanguageOptions {
 }
 
 export type TitleType = string | ITitleLanguageOptions;
+
+export interface ModuleList {
+  anime: BaseAnimeModule[];
+  meta: BaseMetaModule[];
+}

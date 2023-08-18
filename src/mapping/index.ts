@@ -1,16 +1,16 @@
 import "dotenv/config";
 
-import Kickassanime from "../modules/anime/kickassanime";
 import Anilist from "../modules/meta/anilist";
 import { getId, matchMedia } from "./utils";
-import { closest, distance } from "fastest-levenshtein";
 import { getTitle } from "../utils";
+import { Matches, ModuleList } from "../@types";
+import { MODULES } from "../modules";
 
 class Mapping {
   last_id: string = "0";
   last_id_index: number = 0;
   anilist: Anilist = new Anilist();
-  kaa: Kickassanime = new Kickassanime();
+  modules: ModuleList = MODULES;
 
   protected async init() {
     this.last_id = await getId();
@@ -24,11 +24,31 @@ class Mapping {
   }
 
   async match(searchFrom: any, title: string) {
-    const testingTo = await this.kaa.search(title);
+    let matches: Matches = {
+      gogoanime: null,
+      kickassanime: null,
+    };
 
-    let match = await matchMedia(searchFrom!, testingTo!);
+    for await (const Module of this.modules.anime) {
+      let match = await matchMedia(searchFrom!, Module);
 
-    return match;
+      const module_name = Module.name.toLowerCase();
+
+      // get matches from module_name
+      if (match) {
+        match.forEach((item) => {
+          matches[module_name] = {
+            ...matches[module_name],
+            [item.id]: {
+              id: item.id,
+              title: item.title,
+            },
+          };
+        });
+      }
+    }
+
+    return matches;
   }
 
   async start() {
@@ -41,9 +61,12 @@ class Mapping {
   }
 }
 
+import fs from "node:fs";
+
 (async () => {
   const mapping = await Mapping.create();
-  console.log(await mapping.start());
+  const matches = await mapping.start();
+  fs.writeFileSync("./matches.json", JSON.stringify(matches, null, 2));
   console.log("done");
 })();
 

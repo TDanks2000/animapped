@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 import { closest, distance } from "fastest-levenshtein";
-import { AnimeModuleInfo, ModuleResult } from "../@types";
+import { AnimeModuleInfo, BaseAnimeModule, ModuleResult, TitleLanguageOptions } from "../@types";
 import { getTitle } from "../utils";
 
 const last_id_filePath = path.join(__dirname, "..", "../last_id.txt");
@@ -35,12 +35,24 @@ export const updateId = (id: string) => {
   fs.writeFileSync(last_id_filePath, id);
 };
 
-export const matchMedia = async (searchFrom: AnimeModuleInfo, searchThrough: ModuleResult[]) => {
+export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeModule) => {
   let matches: ModuleResult[] = [];
 
-  search(searchFrom, searchThrough, "title", matches);
+  let language: TitleLanguageOptions = "english";
+  let title = getTitle(searchFrom.title)!;
+  let searchThrough = await module.search(title);
+  await search(searchFrom, searchThrough!, "title", matches);
 
-  if (matches.length > 1) search(searchFrom, searchThrough, "year", matches);
+  if (matches.length <= 0) {
+    language = "userPreferred";
+    title = getTitle(searchFrom.title, language)!;
+    searchThrough = await module.search(title);
+    await search(searchFrom, searchThrough!, "title", matches, {
+      titleLanguage: "userPreferred",
+    });
+  }
+
+  if (matches.length > 2) await search(searchFrom, searchThrough!, "year", matches);
 
   return matches;
 };
@@ -49,20 +61,35 @@ const search = async (
   searchFrom: AnimeModuleInfo,
   searchThrough: ModuleResult[],
   searchingFor: "title" | "year" = "title",
-  matches: ModuleResult[]
+  matches: ModuleResult[],
+  extraData?: {
+    titleLanguage?: TitleLanguageOptions;
+    customTitle?: string;
+    checkDub?: boolean;
+  }
 ) => {
-  let searchFromTitle = getTitle(searchFrom.title)!;
+  let searchFromTitle = getTitle(searchFrom.title, extraData?.titleLanguage)!;
+  if (extraData?.customTitle) searchFromTitle = getTitle(extraData.customTitle)!;
 
   switch (searchingFor) {
     case "title":
       for await (const item of searchThrough!) {
-        const distanceFrom = distance(searchFromTitle, item.title.toLowerCase());
+        let title = item.title?.toLowerCase() ?? item.altTitles!?.[0]?.toLowerCase();
+
+        if (!title) return;
+        if (title?.includes("dub")) {
+          const dubTitle = removeDubFromTitle(item.title);
+          const distanceFrom = distance(searchFromTitle, dubTitle);
+          if (distanceFrom <= parseInt(process.env.DISTANCE!)) matches.push(item);
+        }
+        const distanceFrom = distance(searchFromTitle, title);
+
         if (distanceFrom <= parseInt(process.env.DISTANCE!)) matches.push(item);
       }
       break;
     case "year":
       for await (const item of searchThrough!) {
-        if (Number(item.year) === Number(searchFrom.year)) matches = [item];
+        if (Number(item.year) === Number(searchFrom.year)) matches.push(item);
       }
       break;
     default:
@@ -84,4 +111,10 @@ export const goThroughList = async (last_id_index: number, mapFN: Function) => {
   ids = ids.split("\n");
 
   let id = ids[last_id_index];
+};
+
+const removeDubFromTitle = (title: string) => {
+  let realTitle = title.toLowerCase();
+  realTitle = realTitle.replace(/dub|[\(\)]/g, "");
+  return realTitle;
 };
