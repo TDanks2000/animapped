@@ -1,4 +1,3 @@
-import { CoverImage } from "./../../../node_modules/@tdanks2000/anilist-wrapper/dist/types/index.d";
 import {
   AnimeModuleInfo,
   BaseMetaModule,

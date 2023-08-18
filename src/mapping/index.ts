@@ -1,5 +1,8 @@
 import "dotenv/config";
 
+import figlet from "figlet";
+import Console from "@tdanks2000/fancyconsolelog";
+
 import Anilist from "../modules/meta/anilist";
 import { getId, matchMedia } from "./utils";
 import { getTitle } from "../utils";
@@ -52,6 +55,28 @@ class Mapping {
   }
 
   async start() {
+    figlet.text(
+      "AniMapped",
+      {
+        font: "Big",
+        horizontalLayout: "default",
+        verticalLayout: "default",
+        whitespaceBreak: true,
+      },
+      function (err, data) {
+        if (err) {
+          console.log("Something went wrong...");
+          console.dir(err);
+          return;
+        }
+
+        const c = new Console();
+        c.setColor("yellowBright");
+        c.log(data);
+        console.log("\n");
+      }
+    );
+
     const searchFrom = await this.anilist.getMedia(this.last_id);
     let searchFromTitle = getTitle(searchFrom!.title);
 
@@ -67,7 +92,6 @@ import fs from "node:fs";
   const mapping = await Mapping.create();
   const matches = await mapping.start();
   fs.writeFileSync("./matches.json", JSON.stringify(matches, null, 2));
-  console.log("done");
 })();
 
 export default Mapping;

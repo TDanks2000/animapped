@@ -4,6 +4,7 @@ import axios from "axios";
 import { closest, distance } from "fastest-levenshtein";
 import { AnimeModuleInfo, BaseAnimeModule, ModuleResult, TitleLanguageOptions } from "../@types";
 import { getTitle } from "../utils";
+import Console from "@tdanks2000/fancyconsolelog";
 
 const last_id_filePath = path.join(__dirname, "..", "../last_id.txt");
 const ids_path = path.join(__dirname, "..", "../ids.txt");
@@ -15,11 +16,15 @@ export const getId = async (typeToGet: "index" | "id" = "id") => {
   if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
   else last_id = fs.readFileSync(last_id_filePath, "utf-8");
 
-  let { data: ids } = await axios.get(
-    "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-  );
-  ids = ids.split("\n");
+  if (!fs.existsSync(ids_path)) {
+    let { data: ids } = await axios.get(
+      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+    );
+    fs.writeFileSync(ids_path, ids);
+  }
+  let ids: any = fs.readFileSync(ids_path, "utf-8");
 
+  ids = ids.split("\n");
   let id = ids[0];
   if (parseInt(last_id) > 0) {
     const id_find = ids.find((id: string) => id === last_id);
@@ -36,6 +41,11 @@ export const updateId = (id: string) => {
 };
 
 export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeModule) => {
+  const console = new Console();
+  const start = new Date(Date.now());
+
+  console.info(`Searching ${module.name} for ${searchFrom.title.english}`);
+
   let matches: ModuleResult[] = [];
 
   let language: TitleLanguageOptions = "english";
@@ -53,6 +63,12 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
   }
 
   if (matches.length > 2) await search(searchFrom, searchThrough!, "year", matches);
+
+  if (matches.length > 0) {
+    const end = new Date(Date.now());
+    const matchedIn = end.getTime() - start.getTime();
+    console.info(`Matched ${module.name} in ${matchedIn}ms`, searchFrom.title.english);
+  }
 
   return matches;
 };
