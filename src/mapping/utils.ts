@@ -34,6 +34,30 @@ export const getId = async (typeToGet: "index" | "id" = "id") => {
   return typeToGet === "index" ? ids.indexOf(last_id) : id;
 };
 
+export const getNextId = async (id: string) => {
+  let last_id_file = fs.existsSync(last_id_filePath);
+  let last_id: string = "0";
+
+  if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
+  else last_id = fs.readFileSync(last_id_filePath, "utf-8");
+
+  if (!fs.existsSync(ids_path)) {
+    let { data: ids } = await axios.get(
+      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+    );
+    fs.writeFileSync(ids_path, ids);
+  }
+  let ids: any = fs.readFileSync(ids_path, "utf-8");
+
+  ids = ids.split("\n");
+  let id_index = ids.indexOf(id);
+  let next_id = ids[id_index + 1];
+
+  if (!next_id) return undefined;
+
+  return next_id;
+};
+
 export const updateId = (id: string) => {
   let last_id_file = fs.existsSync(last_id_filePath);
   if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
@@ -44,25 +68,28 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
   const console = new Console();
   const start = new Date(Date.now());
 
-  console.info(`Searching ${module.name} for ${searchFrom.title.english}`);
+  let language: TitleLanguageOptions = "english";
+  let title = getTitle(searchFrom.title) ?? getTitle(searchFrom.title, language)!;
+
+  console.info(`Searching ${module.name} for ${title!}`);
 
   let matches: ModuleResult[] = [];
 
-  let language: TitleLanguageOptions = "english";
-  let title = getTitle(searchFrom.title)!;
   let searchThrough = await module.search(title);
+
   await search(searchFrom, searchThrough!, "title", matches);
 
-  if (matches.length <= 0) {
-    language = "userPreferred";
+  if (!matches || matches.length <= 0) {
+    language = "romanji";
     title = getTitle(searchFrom.title, language)!;
     searchThrough = await module.search(title);
     await search(searchFrom, searchThrough!, "title", matches, {
-      titleLanguage: "userPreferred",
+      titleLanguage: "romanji",
     });
   }
 
-  if (matches.length > 2) await search(searchFrom, searchThrough!, "year", matches);
+  if (matches.length > 2 && searchFrom.year)
+    await search(searchFrom, searchThrough!, "year", matches);
 
   if (matches.length > 0) {
     const end = new Date(Date.now());
@@ -126,7 +153,11 @@ export const goThroughList = async (last_id_index: number, mapFN: Function) => {
   let ids: any = fs.readFileSync(ids_path, "utf-8");
   ids = ids.split("\n");
 
-  let id = ids[last_id_index];
+  // start looping through ids starting from id
+  for (let i = last_id_index - 1; i < ids.length; i++) {
+    let id = ids[i];
+    await mapFN(id);
+  }
 };
 
 const removeDubFromTitle = (title: string) => {

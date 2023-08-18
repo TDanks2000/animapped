@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ANIME {
+model Anime {
   id         String  @id @unique @default(uuid())
   anilist_id String  @unique
   mal_id     String? @unique

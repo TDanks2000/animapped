@@ -17,6 +17,20 @@ export interface ModuleResult {
   moduleId?: ModuleIds;
 }
 
+export const Formats = [
+  Format.TV,
+  Format.TV_SHORT,
+  Format.MOVIE,
+  Format.SPECIAL,
+  Format.OVA,
+  Format.ONA,
+  Format.MUSIC,
+  Format.MANGA,
+  Format.NOVEL,
+  Format.ONE_SHOT,
+  Format.UNKNOWN,
+];
+
 export const enum Format {
   TV = "TV",
   TV_SHORT = "TV_SHORT",

@@ -24,3 +24,7 @@ export const getTitle = (
     undefined
   );
 };
+
+export const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};

@@ -24,6 +24,8 @@ class Anilist extends BaseMetaModule {
 
     data?.data?.Page?.media.forEach((item) => {
       searchResults.push({
+        id: item?.id.toString(),
+        malId: item?.idMal?.toString(),
         title: item?.title as ITitleLanguageOptions,
         synonyms: [],
         currentEpisode: item?.episodes,
@@ -74,6 +76,8 @@ class Anilist extends BaseMetaModule {
       tags: item?.tags?.map((tag: any) => tag.name),
       rating: item?.averageScore,
       popularity: item?.popularity,
+      id: item?.id.toString(),
+      malId: item?.idMal?.toString(),
     };
 
     return info;
