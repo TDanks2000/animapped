@@ -32,9 +32,6 @@ class Proxies {
     let items = Array.from(this.proxies);
     const proxy = items[Math.floor(Math.random() * items.length)];
 
-    const host = proxy.split(":")[0];
-    const port = parseInt(proxy.split(":")[1]);
-
     return `${this.protocol}://${proxy}`;
   }
 }
