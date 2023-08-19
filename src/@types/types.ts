@@ -124,7 +124,7 @@ export type Anime = {
   tags: string[];
 };
 
-export type TitleLanguageOptions = "english" | "native" | "romanji" | "userPreferred";
+export type TitleLanguageOptions = "english" | "native" | "romaji" | "userPreferred";
 
 export interface ITitleLanguageOptions {
   english?: string;
@@ -139,3 +139,5 @@ export interface ModuleList {
   anime: BaseAnimeModule[];
   meta: BaseMetaModule[];
 }
+
+export type Proxy = string;

@@ -1,11 +1,23 @@
 import axios from "axios";
-import { ModuleResult, VoiceType, BaseAnimeModule, ModuleIds } from "../../@types";
+import { ModuleResult, VoiceType, BaseAnimeModule, ModuleIds, Proxy } from "../../@types";
 import { USER_AGENT } from "../../utils";
 
 class Kickassanime extends BaseAnimeModule {
   id = ModuleIds.Kickassanime;
   name = "Kickassanime";
   url = "https://kickassanime.am";
+  proxy?: Proxy;
+
+  doesDubHaveSeprateID = false;
+
+  constructor(proxy?: Proxy) {
+    super();
+    if (proxy) this.proxy = proxy;
+  }
+
+  updateProxy(proxy: Proxy): void {
+    this.proxy = proxy;
+  }
 
   private headers = {
     "User-Agent": USER_AGENT,

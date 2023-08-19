@@ -1,26 +1,29 @@
 import "dotenv/config";
 
-import figlet from "figlet";
 import Console from "@tdanks2000/fancyconsolelog";
 
 import Anilist from "../modules/meta/anilist";
 import { getId, getNextId, goThroughList, matchMedia, updateId } from "./utils";
-import { delay, getTitle } from "../utils";
+import { Proxies, delay, getTitle } from "../utils";
 import { Matches, ModuleList } from "../@types";
 import { MODULES } from "../modules";
 import { Database } from "../database";
+import ms from "ms";
 
 class Mapping {
   last_id: string = "0";
   last_id_index: number = 0;
   anilist: Anilist = new Anilist();
   modules: ModuleList = MODULES;
+  proxies: Proxies = new Proxies();
   database: Database = new Database();
 
-  timeout_time: number = 60 * 60 * 12;
+  timeout_time: number = ms("15s");
 
-  constructor(timeout_time?: number) {
-    this.timeout_time = timeout_time ?? this.timeout_time;
+  constructor(timeout_time?: number | string) {
+    this.proxies.start();
+    this.timeout_time =
+      typeof timeout_time === "string" ? ms(timeout_time) : timeout_time ?? this.timeout_time;
   }
 
   protected async init() {
@@ -42,6 +45,7 @@ class Mapping {
     };
 
     for await (const Module of this.modules.anime) {
+      Module.updateProxy(this.proxies.getRandomProxy());
       let match = await matchMedia(searchFrom!, Module);
 
       const module_name = Module.name.toLowerCase();
@@ -64,31 +68,9 @@ class Mapping {
   }
 
   async start() {
-    await figlet.text(
-      "AniMapped",
-      {
-        font: "Big",
-        horizontalLayout: "default",
-        verticalLayout: "default",
-        whitespaceBreak: true,
-      },
-      function (err, data) {
-        if (err) {
-          console.log("Something went wrong...");
-          console.dir(err);
-          return;
-        }
-
-        const c = new Console();
-        c.setColor("yellowBright");
-        c.log(data);
-        console.log("\n");
-      }
-    );
-
     return goThroughList(this.last_id_index, async (id: string) => {
       const searchFrom = await this.anilist.getMedia(id);
-      let searchFromTitle = getTitle(searchFrom!.title);
+      let searchFromTitle = (await getTitle(searchFrom!.title))!;
       if (!searchFromTitle?.length) return null;
 
       if (!searchFrom?.year) return;
@@ -109,8 +91,15 @@ class Mapping {
 
       let timeoutTime = this.timeout_time;
 
-      console.log(`delaying for ${timeoutTime}ms before next request`);
+      const c = new Console();
+      c.setColor("redBright");
+
+      c.log(`delaying for ${ms(timeoutTime, { long: true })} before next request`);
+
       await delay(timeoutTime);
+
+      c.setColor("greenBright");
+      c.log(`finshed delaying for ${ms(timeoutTime, { long: true })} starting next request`);
     });
   }
 }

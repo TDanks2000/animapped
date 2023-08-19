@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ModuleResult, VoiceType, BaseAnimeModule, ModuleIds, Format } from "../../@types";
+import { ModuleResult, VoiceType, BaseAnimeModule, ModuleIds, Format, Proxy } from "../../@types";
 import { USER_AGENT } from "../../utils";
 import { load } from "cheerio";
 
@@ -7,6 +7,17 @@ class Gogoanime extends BaseAnimeModule {
   id = ModuleIds.Gogoanime;
   name = "gogoanime";
   url = "https://gogoanimehd.to";
+  proxy?: Proxy;
+  doesDubHaveSeprateID = true;
+
+  constructor(proxy?: Proxy) {
+    super();
+    if (proxy) this.proxy = proxy;
+  }
+
+  updateProxy(proxy: Proxy): void {
+    this.proxy = proxy;
+  }
 
   async search(keyword: string, page: number = 1): Promise<ModuleResult[] | undefined> {
     const searchResult: ModuleResult[] = [];

@@ -1,5 +1,13 @@
 import axios from "axios";
-import { ModuleResult, VoiceType, BaseAnimeModule, ModuleIds, Format, Formats } from "../../@types";
+import {
+  ModuleResult,
+  VoiceType,
+  BaseAnimeModule,
+  ModuleIds,
+  Format,
+  Formats,
+  Proxy,
+} from "../../@types";
 import { USER_AGENT } from "../../utils";
 import { load } from "cheerio";
 
@@ -7,6 +15,18 @@ class Aniwatch extends BaseAnimeModule {
   id = ModuleIds.Aniwatch;
   name = "aniwatch";
   url = "https://aniwatch.to";
+  proxy?: Proxy;
+
+  doesDubHaveSeprateID = false;
+
+  constructor(proxy?: Proxy) {
+    super();
+    if (proxy) this.proxy = proxy;
+  }
+
+  updateProxy(proxy: Proxy): void {
+    this.proxy = proxy;
+  }
 
   async search(keyword: string, page: number = 1): Promise<ModuleResult[] | undefined> {
     const searchResult: ModuleResult[] = [];
