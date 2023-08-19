@@ -18,7 +18,7 @@ class Mapping {
   proxies: Proxies = new Proxies();
   database: Database = new Database();
 
-  timeout_time: number = ms("15s");
+  timeout_time: number = ms("30s");
 
   constructor(timeout_time?: number | string) {
     this.proxies.start();

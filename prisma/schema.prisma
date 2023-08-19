@@ -17,4 +17,7 @@ model Anime {
   title      String
   year       String
   mappings   Json?
+
+  updated_at DateTime @default(now())
+  created_at DateTime @default(now())
 }

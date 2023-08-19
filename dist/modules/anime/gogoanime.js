@@ -17,11 +17,17 @@ const _types_1 = require("../../@types");
 const utils_1 = require("../../utils");
 const cheerio_1 = require("cheerio");
 class Gogoanime extends _types_1.BaseAnimeModule {
-    constructor() {
-        super(...arguments);
+    constructor(proxy) {
+        super();
         this.id = _types_1.ModuleIds.Gogoanime;
         this.name = "gogoanime";
         this.url = "https://gogoanimehd.to";
+        this.doesDubHaveSeprateID = true;
+        if (proxy)
+            this.proxy = proxy;
+    }
+    updateProxy(proxy) {
+        this.proxy = proxy;
     }
     search(keyword, page = 1) {
         return __awaiter(this, void 0, void 0, function* () {

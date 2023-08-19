@@ -21,22 +21,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mapping = void 0;
 require("dotenv/config");
-const figlet_1 = __importDefault(require("figlet"));
 const fancyconsolelog_1 = __importDefault(require("@tdanks2000/fancyconsolelog"));
 const anilist_1 = __importDefault(require("../modules/meta/anilist"));
 const utils_1 = require("./utils");
 const utils_2 = require("../utils");
 const modules_1 = require("../modules");
 const database_1 = require("../database");
+const ms_1 = __importDefault(require("ms"));
 class Mapping {
     constructor(timeout_time) {
         this.last_id = "0";
         this.last_id_index = 0;
         this.anilist = new anilist_1.default();
         this.modules = modules_1.MODULES;
+        this.proxies = new utils_2.Proxies();
         this.database = new database_1.Database();
-        this.timeout_time = 60 * 60 * 12;
-        this.timeout_time = timeout_time !== null && timeout_time !== void 0 ? timeout_time : this.timeout_time;
+        this.timeout_time = (0, ms_1.default)("15s");
+        this.proxies.start();
+        this.timeout_time =
+            typeof timeout_time === "string" ? (0, ms_1.default)(timeout_time) : timeout_time !== null && timeout_time !== void 0 ? timeout_time : this.timeout_time;
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -64,6 +67,7 @@ class Mapping {
                     _c = _f.value;
                     _d = false;
                     const Module = _c;
+                    Module.updateProxy(this.proxies.getRandomProxy());
                     let match = yield (0, utils_1.matchMedia)(searchFrom, Module);
                     const module_name = Module.name.toLowerCase();
                     // get matches from module_name
@@ -90,26 +94,10 @@ class Mapping {
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield figlet_1.default.text("AniMapped", {
-                font: "Big",
-                horizontalLayout: "default",
-                verticalLayout: "default",
-                whitespaceBreak: true,
-            }, function (err, data) {
-                if (err) {
-                    console.log("Something went wrong...");
-                    console.dir(err);
-                    return;
-                }
-                const c = new fancyconsolelog_1.default();
-                c.setColor("yellowBright");
-                c.log(data);
-                console.log("\n");
-            });
             return (0, utils_1.goThroughList)(this.last_id_index, (id) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 const searchFrom = yield this.anilist.getMedia(id);
-                let searchFromTitle = (0, utils_2.getTitle)(searchFrom.title);
+                let searchFromTitle = (yield (0, utils_2.getTitle)(searchFrom.title));
                 if (!(searchFromTitle === null || searchFromTitle === void 0 ? void 0 : searchFromTitle.length))
                     return null;
                 if (!(searchFrom === null || searchFrom === void 0 ? void 0 : searchFrom.year))
@@ -128,8 +116,12 @@ class Mapping {
                 else
                     (0, utils_1.updateId)(nextId);
                 let timeoutTime = this.timeout_time;
-                console.log(`delaying for ${timeoutTime}ms before next request`);
+                const c = new fancyconsolelog_1.default();
+                c.setColor("redBright");
+                c.log(`delaying for ${(0, ms_1.default)(timeoutTime, { long: true })} before next request`);
                 yield (0, utils_2.delay)(timeoutTime);
+                c.setColor("greenBright");
+                c.log(`finshed delaying for ${(0, ms_1.default)(timeoutTime, { long: true })} starting next request`);
             }));
         });
     }

@@ -16,11 +16,12 @@ const axios_1 = __importDefault(require("axios"));
 const _types_1 = require("../../@types");
 const utils_1 = require("../../utils");
 class Kickassanime extends _types_1.BaseAnimeModule {
-    constructor() {
-        super(...arguments);
+    constructor(proxy) {
+        super();
         this.id = _types_1.ModuleIds.Kickassanime;
         this.name = "Kickassanime";
         this.url = "https://kickassanime.am";
+        this.doesDubHaveSeprateID = false;
         this.headers = {
             "User-Agent": utils_1.USER_AGENT,
             "Content-type": "application/json",
@@ -36,6 +37,11 @@ class Kickassanime extends _types_1.BaseAnimeModule {
                 return "";
             }
         };
+        if (proxy)
+            this.proxy = proxy;
+    }
+    updateProxy(proxy) {
+        this.proxy = proxy;
     }
     search(keyword) {
         return __awaiter(this, void 0, void 0, function* () {

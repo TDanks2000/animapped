@@ -106,7 +106,7 @@ export type Anime = {
     totalEpisodes?: number;
     tags: string[];
 };
-export type TitleLanguageOptions = "english" | "native" | "romanji" | "userPreferred";
+export type TitleLanguageOptions = "english" | "native" | "romaji" | "userPreferred";
 export interface ITitleLanguageOptions {
     english?: string;
     romaji: string;
@@ -118,3 +118,4 @@ export interface ModuleList {
     anime: BaseAnimeModule[];
     meta: BaseMetaModule[];
 }
+export type Proxy = string;

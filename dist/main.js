@@ -8,11 +8,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const figlet_1 = __importDefault(require("figlet"));
 const mapping_1 = require("./mapping");
+const fancyconsolelog_1 = __importDefault(require("@tdanks2000/fancyconsolelog"));
+const c = new fancyconsolelog_1.default();
 class Main {
     constructor() {
-        console.log("Hello World");
+        figlet_1.default.text("AniMapped", {
+            font: "Big",
+            horizontalLayout: "default",
+            verticalLayout: "default",
+            whitespaceBreak: true,
+        }, function (err, data) {
+            if (err) {
+                console.log("Something went wrong...");
+                console.dir(err);
+                return;
+            }
+            c.setColor("yellowBright");
+            c.log(data);
+            console.log("\n");
+        });
     }
     startMapping() {
         return __awaiter(this, void 0, void 0, function* () {
