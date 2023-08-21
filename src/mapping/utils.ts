@@ -80,7 +80,7 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
   const start = new Date(Date.now());
 
   let language: TitleLanguageOptions = "english";
-  let title = (await getTitle(searchFrom.title))!;
+  let title = cleanUpTitle((await getTitle(searchFrom.title))!);
 
   console.info(`Searching ${module.name} for ${title}`);
 
@@ -90,7 +90,7 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
 
   if (!matches || matches.length <= 0) {
     language = "romaji";
-    title = (await getTitle(searchFrom.title, language))!;
+    title = cleanUpTitle((await getTitle(searchFrom.title, language))!);
     searchThrough = await module.search(title);
     await search(searchFrom, searchThrough!, "title", matches, {
       titleLanguage: "romaji",
@@ -222,5 +222,6 @@ const removeDubFromTitle = (title: string) => {
 const cleanUpTitle = (title: string) => {
   let realTitle = removeDubFromTitle(title);
   realTitle = realTitle.replace(/\[RAW\]\s*/g, "");
+  realTitle = realTitle.replace(/[^a-zA-Z0-9]/g, "");
   return realTitle;
 };
