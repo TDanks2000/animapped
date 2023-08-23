@@ -86,17 +86,12 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
 
   let searchThrough = await module.search(title);
 
-  console.log(module.name, searchThrough);
-
   await search(searchFrom, searchThrough!, "title", matches, { titleLanguage: language });
 
   if (matches.length <= 0) {
-    console.log("try again!");
     language = "romaji";
     title = cleanUpTitle((await getTitle(searchFrom.title, language))!);
-    console.log(title);
     searchThrough = await module.search(title);
-    console.log(module.name, searchThrough);
     await search(searchFrom, searchThrough!, "title", matches, { titleLanguage: language });
   }
 
@@ -210,7 +205,7 @@ export const goThroughList = async (last_id_index: number, mapFN: Function) => {
   ids = ids.split("\n");
 
   // start looping through ids starting from id
-  for (let i = last_id_index - 1; i < ids.length; i++) {
+  for (let i = last_id_index; i < ids.length; i++) {
     let id = ids[i];
     await mapFN(id);
   }

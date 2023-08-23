@@ -88,15 +88,11 @@ const matchMedia = (searchFrom, module) => __awaiter(void 0, void 0, void 0, fun
     let title = cleanUpTitle((yield (0, utils_1.getTitle)(searchFrom.title)));
     console.info(`Searching ${module.name} for ${title}`);
     let searchThrough = yield module.search(title);
-    console.log(module.name, searchThrough);
     yield search(searchFrom, searchThrough, "title", matches, { titleLanguage: language });
     if (matches.length <= 0) {
-        console.log("try again!");
         language = "romaji";
         title = cleanUpTitle((yield (0, utils_1.getTitle)(searchFrom.title, language)));
-        console.log(title);
         searchThrough = yield module.search(title);
-        console.log(module.name, searchThrough);
         yield search(searchFrom, searchThrough, "title", matches, { titleLanguage: language });
     }
     if (matches.length > 2 &&
@@ -211,7 +207,7 @@ const goThroughList = (last_id_index, mapFN) => __awaiter(void 0, void 0, void 0
     let ids = node_fs_1.default.readFileSync(ids_path, "utf-8");
     ids = ids.split("\n");
     // start looping through ids starting from id
-    for (let i = last_id_index - 1; i < ids.length; i++) {
+    for (let i = last_id_index; i < ids.length; i++) {
         let id = ids[i];
         yield mapFN(id);
     }
