@@ -36,7 +36,7 @@ class Mapping {
         this.modules = modules_1.MODULES;
         this.proxies = new utils_2.Proxies();
         this.database = new database_1.Database();
-        this.timeout_time = (0, ms_1.default)("30s");
+        this.timeout_time = (0, ms_1.default)("10s");
         this.proxies.start();
         this.timeout_time =
             typeof timeout_time === "string" ? (0, ms_1.default)(timeout_time) : timeout_time !== null && timeout_time !== void 0 ? timeout_time : this.timeout_time;
