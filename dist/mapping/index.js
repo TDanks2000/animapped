@@ -36,7 +36,7 @@ class Mapping {
         this.modules = modules_1.MODULES;
         this.proxies = new utils_2.Proxies();
         this.database = new database_1.Database();
-        this.timeout_time = (0, ms_1.default)("15s");
+        this.timeout_time = (0, ms_1.default)("30s");
         this.proxies.start();
         this.timeout_time =
             typeof timeout_time === "string" ? (0, ms_1.default)(timeout_time) : timeout_time !== null && timeout_time !== void 0 ? timeout_time : this.timeout_time;
@@ -123,6 +123,19 @@ class Mapping {
                 c.setColor("greenBright");
                 c.log(`finshed delaying for ${(0, ms_1.default)(timeoutTime, { long: true })} starting next request`);
             }));
+        });
+    }
+    test(module) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = this.last_id;
+            const searchFrom = yield this.anilist.getMedia(id);
+            let searchFromTitle = (yield (0, utils_2.getTitle)(searchFrom.title));
+            if (!(searchFromTitle === null || searchFromTitle === void 0 ? void 0 : searchFromTitle.length))
+                return null;
+            if (!(searchFrom === null || searchFrom === void 0 ? void 0 : searchFrom.year))
+                return "no year";
+            const matches = yield this.match(searchFrom, searchFromTitle);
+            return matches;
         });
     }
 }

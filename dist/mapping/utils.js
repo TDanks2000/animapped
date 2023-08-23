@@ -85,31 +85,33 @@ const matchMedia = (searchFrom, module) => __awaiter(void 0, void 0, void 0, fun
     const console = new fancyconsolelog_1.default();
     const start = new Date(Date.now());
     let language = "english";
-    let title = (yield (0, utils_1.getTitle)(searchFrom.title));
+    let title = cleanUpTitle((yield (0, utils_1.getTitle)(searchFrom.title)));
     console.info(`Searching ${module.name} for ${title}`);
     let searchThrough = yield module.search(title);
-    yield search(searchFrom, searchThrough, "title", matches);
-    if (!matches || matches.length <= 0) {
+    console.log(module.name, searchThrough);
+    yield search(searchFrom, searchThrough, "title", matches, { titleLanguage: language });
+    if (matches.length <= 0) {
+        console.log("try again!");
         language = "romaji";
-        title = (yield (0, utils_1.getTitle)(searchFrom.title, language));
+        title = cleanUpTitle((yield (0, utils_1.getTitle)(searchFrom.title, language)));
+        console.log(title);
         searchThrough = yield module.search(title);
-        yield search(searchFrom, searchThrough, "title", matches, {
-            titleLanguage: "romaji",
-        });
+        console.log(module.name, searchThrough);
+        yield search(searchFrom, searchThrough, "title", matches, { titleLanguage: language });
     }
     if (matches.length > 2 &&
         searchFrom.year &&
         module.id === _types_1.ModuleIds.Gogoanime &&
         checkedYear === false) {
         checkedYear = true;
-        yield search(searchFrom, matches, "year", matches);
+        yield search(searchFrom, matches, "year", matches, { titleLanguage: language });
     }
     if (matches.length >= 2 &&
         searchFrom.year &&
         module.id !== _types_1.ModuleIds.Gogoanime &&
         checkedYear === false) {
         checkedYear = true;
-        yield search(searchFrom, matches, "year", matches);
+        yield search(searchFrom, matches, "year", matches, { titleLanguage: language });
     }
     matches = matches.sort((a, b) => {
         if (a.diffrence > b.diffrence)
@@ -223,5 +225,6 @@ const removeDubFromTitle = (title) => {
 const cleanUpTitle = (title) => {
     let realTitle = removeDubFromTitle(title);
     realTitle = realTitle.replace(/\[RAW\]\s*/g, "");
+    realTitle = realTitle.replace(/\//g, "");
     return realTitle;
 };
