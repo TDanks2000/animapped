@@ -164,7 +164,7 @@ const search = async (
       for await (const item of searchThrough!) {
         let title = item.title?.toLowerCase() ?? item.altTitles!?.[0]?.toLowerCase();
 
-        if (!title || !searchFrom.title || !searchFrom) return;
+        if (!title || !searchFromTitle) return;
         if (title?.includes("dub") || title.includes("[raw]")) {
           const cleanTitle = cleanUpTitle(title);
           if (!cleanTitle) return;

@@ -153,7 +153,7 @@ const search = (searchFrom, searchThrough, searchingFor = "title", matches, extr
                     _l = false;
                     const item = _c;
                     let title = (_h = (_g = item.title) === null || _g === void 0 ? void 0 : _g.toLowerCase()) !== null && _h !== void 0 ? _h : (_k = (_j = item.altTitles) === null || _j === void 0 ? void 0 : _j[0]) === null || _k === void 0 ? void 0 : _k.toLowerCase();
-                    if (!title || !searchFrom.title || !searchFrom)
+                    if (!title || !searchFromTitle)
                         return;
                     if ((title === null || title === void 0 ? void 0 : title.includes("dub")) || title.includes("[raw]")) {
                         const cleanTitle = cleanUpTitle(title);
