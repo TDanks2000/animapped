@@ -12,8 +12,8 @@ export const getTitle = async (
   if (preferedLanguage) {
     return (
       (await Object.entries(title)
-        .find(([key]) => key.toLowerCase() === preferedLanguage.toLowerCase())?.[1]
-        .toLowerCase()) ?? undefined
+        .find(([key]) => key?.toLowerCase() === preferedLanguage?.toLowerCase())?.[1]
+        ?.toLowerCase()) ?? undefined
     );
   }
 

@@ -212,14 +212,14 @@ export const goThroughList = async (last_id_index: number, mapFN: Function) => {
 };
 
 const removeDubFromTitle = (title: string) => {
-  let realTitle = title.toLowerCase();
-  realTitle = realTitle.replace(/dub|[\(\)]/g, "");
+  let realTitle = title?.toLowerCase();
+  realTitle = realTitle?.replace(/dub|[\(\)]/g, "");
   return realTitle;
 };
 
 const cleanUpTitle = (title: string) => {
   let realTitle = removeDubFromTitle(title);
-  realTitle = realTitle.replace(/\[RAW\]\s*/g, "");
-  realTitle = realTitle.replace(/\//g, "");
+  realTitle = realTitle?.replace(/\[RAW\]\s*/g, "");
+  realTitle = realTitle?.replace(/\//g, "");
   return realTitle;
 };

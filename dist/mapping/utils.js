@@ -214,13 +214,13 @@ const goThroughList = (last_id_index, mapFN) => __awaiter(void 0, void 0, void 0
 });
 exports.goThroughList = goThroughList;
 const removeDubFromTitle = (title) => {
-    let realTitle = title.toLowerCase();
-    realTitle = realTitle.replace(/dub|[\(\)]/g, "");
+    let realTitle = title === null || title === void 0 ? void 0 : title.toLowerCase();
+    realTitle = realTitle === null || realTitle === void 0 ? void 0 : realTitle.replace(/dub|[\(\)]/g, "");
     return realTitle;
 };
 const cleanUpTitle = (title) => {
     let realTitle = removeDubFromTitle(title);
-    realTitle = realTitle.replace(/\[RAW\]\s*/g, "");
-    realTitle = realTitle.replace(/\//g, "");
+    realTitle = realTitle === null || realTitle === void 0 ? void 0 : realTitle.replace(/\[RAW\]\s*/g, "");
+    realTitle = realTitle === null || realTitle === void 0 ? void 0 : realTitle.replace(/\//g, "");
     return realTitle;
 };

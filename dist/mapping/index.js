@@ -56,6 +56,7 @@ class Mapping {
     }
     match(searchFrom, title) {
         var _a, e_1, _b, _c;
+        var _d;
         return __awaiter(this, void 0, void 0, function* () {
             let matches = {
                 gogoanime: null,
@@ -63,13 +64,13 @@ class Mapping {
                 aniwatch: null,
             };
             try {
-                for (var _d = true, _e = __asyncValues(this.modules.anime), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
-                    _c = _f.value;
-                    _d = false;
+                for (var _e = true, _f = __asyncValues(this.modules.anime), _g; _g = yield _f.next(), _a = _g.done, !_a; _e = true) {
+                    _c = _g.value;
+                    _e = false;
                     const Module = _c;
                     Module.updateProxy(this.proxies.getRandomProxy());
                     let match = yield (0, utils_1.matchMedia)(searchFrom, Module);
-                    const module_name = Module.name.toLowerCase();
+                    const module_name = (_d = Module.name) === null || _d === void 0 ? void 0 : _d.toLowerCase();
                     // get matches from module_name
                     if (match) {
                         match.forEach((item) => {
@@ -85,7 +86,7 @@ class Mapping {
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
+                    if (!_e && !_a && (_b = _f.return)) yield _b.call(_f);
                 }
                 finally { if (e_1) throw e_1.error; }
             }

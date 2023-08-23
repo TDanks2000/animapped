@@ -48,7 +48,7 @@ class Mapping {
       Module.updateProxy(this.proxies.getRandomProxy());
       let match = await matchMedia(searchFrom!, Module);
 
-      const module_name = Module.name.toLowerCase();
+      const module_name = Module.name?.toLowerCase();
 
       // get matches from module_name
       if (match) {
