@@ -88,7 +88,7 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
 
   await search(searchFrom, searchThrough!, "title", matches, { titleLanguage: language });
 
-  if (matches.length <= 0) {
+  if (!matches || matches.length <= 0) {
     language = "romaji";
     title = cleanUpTitle((await getTitle(searchFrom.title, language))!);
     searchThrough = await module.search(title);
@@ -164,9 +164,10 @@ const search = async (
       for await (const item of searchThrough!) {
         let title = item.title?.toLowerCase() ?? item.altTitles!?.[0]?.toLowerCase();
 
-        if (!title) return;
+        if (!title || !searchFrom.title || !searchFrom) return;
         if (title?.includes("dub") || title.includes("[raw]")) {
-          const cleanTitle = cleanUpTitle(item.title);
+          const cleanTitle = cleanUpTitle(title);
+          if (!cleanTitle) return;
           const distanceFrom = distance(searchFromTitle, cleanTitle);
           if (distanceFrom <= parseInt(process.env.DISTANCE!))
             matches.push({
