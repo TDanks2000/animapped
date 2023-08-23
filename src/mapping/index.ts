@@ -5,7 +5,7 @@ import Console from "@tdanks2000/fancyconsolelog";
 import Anilist from "../modules/meta/anilist";
 import { getId, getNextId, goThroughList, matchMedia, updateId } from "./utils";
 import { Proxies, delay, getTitle } from "../utils";
-import { Matches, ModuleList } from "../@types";
+import { Matches, ModuleIds, ModuleList } from "../@types";
 import { MODULES } from "../modules";
 import { Database } from "../database";
 import ms from "ms";
@@ -102,6 +102,29 @@ class Mapping {
       c.log(`finshed delaying for ${ms(timeoutTime, { long: true })} starting next request`);
     });
   }
+
+  async test(module?: ModuleIds) {
+    const id = this.last_id;
+
+    const searchFrom = await this.anilist.getMedia(id);
+    let searchFromTitle = (await getTitle(searchFrom!.title))!;
+    if (!searchFromTitle?.length) return null;
+
+    if (!searchFrom?.year) return "no year";
+
+    const matches = await this.match(searchFrom, searchFromTitle!);
+
+    return matches;
+  }
 }
+
+// (async () => {
+//   const mapping = await Mapping.create();
+
+//   const matches = await mapping.test();
+//   console.log(matches);
+
+//   process.exit(0);
+// })();
 
 export { Mapping };

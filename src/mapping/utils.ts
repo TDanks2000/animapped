@@ -86,15 +86,18 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
 
   let searchThrough = await module.search(title);
 
-  await search(searchFrom, searchThrough!, "title", matches);
+  console.log(module.name, searchThrough);
 
-  if (!matches || matches.length <= 0) {
+  await search(searchFrom, searchThrough!, "title", matches, { titleLanguage: language });
+
+  if (matches.length <= 0) {
+    console.log("try again!");
     language = "romaji";
     title = cleanUpTitle((await getTitle(searchFrom.title, language))!);
+    console.log(title);
     searchThrough = await module.search(title);
-    await search(searchFrom, searchThrough!, "title", matches, {
-      titleLanguage: "romaji",
-    });
+    console.log(module.name, searchThrough);
+    await search(searchFrom, searchThrough!, "title", matches, { titleLanguage: language });
   }
 
   if (
@@ -104,7 +107,7 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
     checkedYear === false
   ) {
     checkedYear = true;
-    await search(searchFrom, matches, "year", matches);
+    await search(searchFrom, matches, "year", matches, { titleLanguage: language });
   }
   if (
     matches.length >= 2 &&
@@ -113,7 +116,7 @@ export const matchMedia = async (searchFrom: AnimeModuleInfo, module: BaseAnimeM
     checkedYear === false
   ) {
     checkedYear = true;
-    await search(searchFrom, matches!, "year", matches);
+    await search(searchFrom, matches!, "year", matches, { titleLanguage: language });
   }
 
   matches = matches.sort((a, b) => {
@@ -222,6 +225,6 @@ const removeDubFromTitle = (title: string) => {
 const cleanUpTitle = (title: string) => {
   let realTitle = removeDubFromTitle(title);
   realTitle = realTitle.replace(/\[RAW\]\s*/g, "");
-  realTitle = realTitle.replace(/[^a-zA-Z0-9]/g, "");
+  realTitle = realTitle.replace(/\//g, "");
   return realTitle;
 };
