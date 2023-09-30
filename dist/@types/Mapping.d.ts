@@ -8,4 +8,7 @@ export type Matches = {
 export type MatchItem = {
     [x: string]: Match | null;
 };
-export type Match = Pick<ModuleResult, "id" | "title">;
+export type Match = Pick<ModuleResult, "id" | "title"> & {
+    module: string;
+};
+export type SearchingFor = "title" | "year" | "format";

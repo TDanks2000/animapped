@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs add -D @types//ms
+  C:\Program Files\nodejs\node.exe C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs add -D prisma@latest
 
 PATH: 
-  C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.6.0_x64__8wekyb3d8bbwe;C:\Program Files (x86)\jdk/bin;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.4.0_x64__8wekyb3d8bbwe;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\GitHub CLI\;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Tommy\AppData\Local\P;C:\Program Files\starship\bin\;C:\Program Files\Git\cmd;C:\Users\Tommy\AppData\Local\Android\Sdk\tools;C:\Users\Tommy\.console-ninja\.bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\;C:\Users\Tommy\.cargo\bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Roaming\npm;C:\Users\Tommy\AppData\Local\GitHubDesktop\bin;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\.dotnet\tools;C:\Exercism;C:\Users\Tommy\AppData\Local\Programs\oh-my-posh\bin;C:\Users\Tommy\AppData\Local\gitkraken\bin
+  C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.7.0_x64__8wekyb3d8bbwe;C:\Program Files\Microsoft\jdk-11.0.18.10-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\jdk/bin;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.6.0_x64__8wekyb3d8bbwe;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.4.0_x64__8wekyb3d8bbwe;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\GitHub CLI\;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\P;C:\Prog;C:\Program Files\Git\cmd;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Tommy\AppData\Local\Android\Sdk\tools;C:\Users\Tommy\.console-ninja\.bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\;C:\Users\Tommy\.cargo\bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\GitHubDesktop\bin;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Exercism;C:\Users\Tommy\AppData\Local\Programs\oh-my-posh\bin;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\gitkraken\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2023.2.1\bin;;C:\Users\Tommy\AppData\Roaming\npm;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs
 
 Yarn version: 
   1.22.19
@@ -14,27 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2f/ms: Request "https://registry.yarnpkg.com/@types%2f/ms" returned a 405
-      at params.callback [as _callback] (C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs:77684:18)
-      at self.callback (C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs:135297:22)
-      at Request.emit (node:events:512:28)
-      at Request.<anonymous> (C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs:136269:10)
-      at Request.emit (node:events:512:28)
-      at IncomingMessage.<anonymous> (C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs:136191:12)
-      at Object.onceWrapper (node:events:626:28)
-      at IncomingMessage.emit (node:events:524:35)
-      at endReadableNT (node:internal/streams/readable:1359:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+  Error: EPERM: operation not permitted, rmdir 'C:\Users\Tommy\Desktop\Coding\Apis\animapped\node_modules\.bin'
 
 npm manifest: 
   {
     "name": "animapped",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "main": "./dist/main.js",
     "license": "MIT",
     "scripts": {
       "build": "tsc",
-      "start": "node ./dist/main.js"
+      "start": "tsc && node ./dist/main.js"
     },
     "dependencies": {
       "@prisma/client": "^5.1.1",
@@ -50,6 +40,7 @@ npm manifest:
     },
     "devDependencies": {
       "@types/figlet": "^1.5.6",
+      "@types/ms": "^0.7.31",
       "@types/node": "^20.5.0",
       "prisma": "^5.1.1",
       "ts-node": "^10.9.1",
@@ -91,21 +82,21 @@ Lockfile:
       "@jridgewell/sourcemap-codec" "^1.4.10"
   
   "@prisma/client@^5.1.1":
-    version "5.1.1"
-    resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.1.1.tgz#ea2b0c8599bdb3f86d92e8df46fba795a744db01"
-    integrity sha512-fxcCeK5pMQGcgCqCrWsi+I2rpIbk0rAhdrN+ke7f34tIrgPwA68ensrpin+9+fZvuV2OtzHmuipwduSY6HswdA==
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.2.0.tgz#cbfdd440614b38736563a7999f39922fcde0ed50"
+    integrity sha512-AiTjJwR4J5Rh6Z/9ZKrBBLel3/5DzUNntMohOy7yObVnVoTNVFi2kvpLZlFuKO50d7yDspOtW6XBpiAd0BVXbQ==
     dependencies:
-      "@prisma/engines-version" "5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e"
+      "@prisma/engines-version" "5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f"
   
-  "@prisma/engines-version@5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e":
-    version "5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e"
-    resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-5.1.1-1.6a3747c37ff169c90047725a05a6ef02e32ac97e.tgz#2e8a1f098ec09452dbe00923b24f582f95d1747c"
-    integrity sha512-owZqbY/wucbr65bXJ/ljrHPgQU5xXTSkmcE/JcbqE1kusuAXV/TLN3/exmz21SZ5rJ7WDkyk70J2G/n68iogbQ==
+  "@prisma/engines-version@5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f":
+    version "5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f"
+    resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-5.2.0-25.2804dc98259d2ea960602aca6b8e7fdc03c1758f.tgz#11366e7ff031c908debf4983248d40046016de37"
+    integrity sha512-jsnKT5JIDIE01lAeCj2ghY9IwxkedhKNvxQeoyLs6dr4ZXynetD0vTy7u6wMJt8vVPv8I5DPy/I4CFaoXAgbtg==
   
-  "@prisma/engines@5.1.1":
-    version "5.1.1"
-    resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-5.1.1.tgz#9c26d209f93a563e048eab63b1976f222f1707d0"
-    integrity sha512-NV/4nVNWFZSJCCIA3HIFJbbDKO/NARc9ej0tX5S9k2EVbkrFJC4Xt9b0u4rNZWL4V+F5LAjvta8vzEUw0rw+HA==
+  "@prisma/engines@5.2.0":
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-5.2.0.tgz#e5dff48eb324c8137393933292d44ea5c3bc2ce7"
+    integrity sha512-dT7FOLUCdZmq+AunLqB1Iz+ZH/IIS1Fz2THmKZQ6aFONrQD/BQ5ecJ7g2wGS2OgyUFf4OaLam6/bxmgdOBDqig==
   
   "@tdanks2000/anilist-wrapper@1.0.15":
     version "1.0.15"
@@ -147,10 +138,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/figlet/-/figlet-1.5.6.tgz#fd6e71c48ffa83953aaf401c8ff179c2a5fabc9f"
     integrity sha512-AOdn9cKJGXpqfHeif16xeGMwWefB4nsOyxkdRMpc+PEP3nUxzu3psJfIqhjrCNW4Sejt5i6rISWmEwK0sw03mA==
   
+  "@types/ms@^0.7.31":
+    version "0.7.31"
+    resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
+    integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
+  
   "@types/node@^20.5.0":
-    version "20.5.0"
-    resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.0.tgz#7fc8636d5f1aaa3b21e6245e97d56b7f56702313"
-    integrity sha512-Mgq7eCtoTjT89FqNoTzzXg2XvCi5VMhRV6+I2aYanc6kQCBImeNaAYRs/DyoVqk1YEUJK5gN9VO7HRIdz4Wo3Q==
+    version "20.5.3"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.3.tgz#fa52c147f405d56b2f1dd8780d840aa87ddff629"
+    integrity sha512-ITI7rbWczR8a/S6qjAW7DMqxqFMjjTo61qZVWJ1ubPvbIQsL5D/TvwjYEalM8Kthpe3hTzOGrF2TGbAu2uyqeA==
   
   abort-controller@^3.0.0:
     version "3.0.0"
@@ -444,11 +440,11 @@ Lockfile:
       entities "^4.4.0"
   
   prisma@^5.1.1:
-    version "5.1.1"
-    resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.1.1.tgz#8f5c0f9467a828746cb94f846d694dc7b7481a9e"
-    integrity sha512-WJFG/U7sMmcc6TjJTTifTfpI6Wjoh55xl4AzopVwAdyK68L9/ogNo8QQ2cxuUjJf/Wa82z/uhyh3wMzvRIBphg==
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.2.0.tgz#a302dc2635cdec1d22d552ece837fb29a03563b9"
+    integrity sha512-FfFlpjVCkZwrqxDnP4smlNYSH1so+CbfjgdpioFzGGqlQAEm6VHAYSzV7jJgC3ebtY9dNOhDMS2+4/1DDSM7bQ==
     dependencies:
-      "@prisma/engines" "5.1.1"
+      "@prisma/engines" "5.2.0"
   
   proxy-from-env@^1.1.0:
     version "1.1.0"

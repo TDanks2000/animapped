@@ -1,10 +1,15 @@
-import { AnimeModuleInfo, BaseAnimeModule, ModuleResult } from "../@types";
+import { AnimeModuleInfo, BaseAnimeModule, ModuleResult, SearchingFor, TitleLanguageOptions } from "../@types";
 type MATCHES = ModuleResult & {
     diffrence?: number;
 };
-export declare const getId: (typeToGet?: "index" | "id") => Promise<any>;
-export declare const getNextId: (id: string) => Promise<any>;
-export declare const updateId: (id: string) => void;
-export declare const matchMedia: (searchFrom: AnimeModuleInfo, module: BaseAnimeModule) => Promise<MATCHES[]>;
-export declare const goThroughList: (last_id_index: number, mapFN: Function) => Promise<void>;
+export declare class MappingUtils {
+    search_from: AnimeModuleInfo;
+    module: BaseAnimeModule;
+    matches: MATCHES[];
+    constructor(search_from: AnimeModuleInfo, module: BaseAnimeModule);
+    matchMedia(): Promise<MATCHES[] | undefined>;
+    search(searching_for: SearchingFor | undefined, searchThrough: ModuleResult[], extraData?: {
+        titleLanguage?: TitleLanguageOptions;
+    }): Promise<void>;
+}
 export {};

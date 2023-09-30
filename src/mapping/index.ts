@@ -3,7 +3,8 @@ import "dotenv/config";
 import Console from "@tdanks2000/fancyconsolelog";
 
 import Anilist from "../modules/meta/anilist";
-import { getId, getNextId, goThroughList, matchMedia, updateId } from "./utils";
+import { getId, getNextId, goThroughList, updateId } from "./ids";
+import { MappingUtils } from "./utils";
 import { Proxies, delay, getTitle } from "../utils";
 import { Matches, ModuleIds, ModuleList } from "../@types";
 import { MODULES } from "../modules";
@@ -18,7 +19,7 @@ class Mapping {
   proxies: Proxies = new Proxies();
   database: Database = new Database();
 
-  timeout_time: number = ms("10s");
+  timeout_time: number = ms("4s");
 
   constructor(timeout_time?: number | string) {
     this.proxies.start();
@@ -46,7 +47,9 @@ class Mapping {
 
     for await (const Module of this.modules.anime) {
       Module.updateProxy(this.proxies.getRandomProxy());
-      let match = await matchMedia(searchFrom!, Module);
+      const map = new MappingUtils(searchFrom, Module);
+
+      let match = await map.matchMedia();
 
       const module_name = Module.name?.toLowerCase();
 
@@ -58,6 +61,7 @@ class Mapping {
             [item.id]: {
               id: item.id,
               title: item.title ?? item.altTitles![0],
+              module: Module.name,
             },
           };
         });
@@ -103,8 +107,8 @@ class Mapping {
     });
   }
 
-  async test(module?: ModuleIds) {
-    const id = this.last_id;
+  async test(custom_id?: string) {
+    const id = custom_id ?? this.last_id;
 
     const searchFrom = await this.anilist.getMedia(id);
     let searchFromTitle = (await getTitle(searchFrom!.title))!;
@@ -121,7 +125,7 @@ class Mapping {
 // (async () => {
 //   const mapping = await Mapping.create();
 
-//   const matches = await mapping.test();
+//   const matches = await mapping.test("145064");
 //   console.log(matches);
 
 //   process.exit(0);

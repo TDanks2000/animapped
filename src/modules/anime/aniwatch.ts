@@ -70,6 +70,7 @@ class Aniwatch extends BaseAnimeModule {
         ?.first()
         ?.text()
         .toUpperCase();
+
       const format: Format = Formats.includes(formatString as Format)
         ? (formatString as Format)
         : Format.UNKNOWN;

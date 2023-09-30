@@ -29,3 +29,13 @@ export const getTitle = async (
 export const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+export const substringBefore = (string: string, toFind: string) => {
+  const index = string.indexOf(toFind);
+  return index == -1 ? "" : string.substring(0, index);
+};
+
+export const substringAfter = (string: string, toFind: string) => {
+  const index = string.indexOf(toFind);
+  return index == -1 ? "" : string.substring(index + toFind.length);
+};
