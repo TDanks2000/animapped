@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import Console from "@tdanks2000/fancyconsolelog";
 
 import Anilist from "../modules/meta/anilist";
