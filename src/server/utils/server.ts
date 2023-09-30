@@ -5,14 +5,14 @@ import Fastify from "fastify";
 import bodyParser from "@fastify/formbody";
 
 import routes from "../routes";
+import Logger from "./logger";
 
 export const start = async () => {
   const app = Fastify({
     maxParamLength: 1000,
-    // logger: log,
-    logger: true,
   });
 
+  app.register(Logger);
   app.register(FastifyCors, {
     origin: "*",
   });
