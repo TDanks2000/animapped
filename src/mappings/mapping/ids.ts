@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 
-const last_id_filePath = path.join(__dirname, "..", "../last_id.txt");
-const ids_path = path.join(__dirname, "..", "../ids.txt");
+const last_id_filePath = path.join(__dirname, "..", "..", "../last_id.txt");
+const ids_path = path.join(__dirname, "..", "..", "../ids.txt");
 
 export const getId = async (typeToGet: "index" | "id" = "id") => {
   let last_id_file = fs.existsSync(last_id_filePath);
