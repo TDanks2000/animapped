@@ -72,7 +72,11 @@ class Mapping {
   async start() {
     return goThroughList(this.last_id_index, async (id: string) => {
       const searchFrom = await this.anilist.getMedia(id);
-      let searchFromTitle = (await getTitle(searchFrom!.title))!;
+
+      // return if 404
+      if (!searchFrom) return;
+
+      let searchFromTitle = (await getTitle(searchFrom!?.title))!;
       if (!searchFromTitle?.length) return null;
 
       if (!searchFrom?.year) return;
@@ -109,7 +113,8 @@ class Mapping {
     const id = custom_id ?? this.last_id;
 
     const searchFrom = await this.anilist.getMedia(id);
-    let searchFromTitle = (await getTitle(searchFrom!.title))!;
+    if (!searchFrom) return null;
+    let searchFromTitle = (await getTitle(searchFrom!?.title))!;
     if (!searchFromTitle?.length) return null;
 
     if (!searchFrom?.year) return "no year";
@@ -123,7 +128,7 @@ class Mapping {
 // (async () => {
 //   const mapping = await Mapping.create();
 
-//   const matches = await mapping.test("145064");
+//   const matches = await mapping.test("5827");
 //   console.log(matches);
 
 //   process.exit(0);
