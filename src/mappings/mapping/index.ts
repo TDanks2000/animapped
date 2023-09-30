@@ -33,6 +33,7 @@ class Mapping {
   static async create(timeout_time?: number) {
     const mapping = new Mapping(timeout_time);
     await mapping.init();
+    console.log("test", mapping.last_id_index);
     return mapping;
   }
 

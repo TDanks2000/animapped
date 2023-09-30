@@ -22,7 +22,11 @@ export const getId = async (typeToGet: "index" | "id" = "id") => {
 
   ids = ids.split("\n");
   let id = ids[0];
+
+  console.log("testing", parseInt(last_id));
+
   if (parseInt(last_id) > 0) {
+    console.log("test");
     const id_find = ids.find((id: string) => id === last_id);
     if (id_find) id = id_find;
   }
@@ -46,8 +50,10 @@ export const getNextId = async (id: string) => {
   let ids: any = fs.readFileSync(ids_path, "utf-8");
 
   ids = ids.split("\n");
-  let id_index = ids.indexOf(id);
+  let id_index = ids.indexOf(last_id);
   let next_id = ids[id_index + 1];
+
+  console.log(last_id);
 
   if (!next_id) return undefined;
 
