@@ -2,86 +2,107 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 
-const last_id_filePath = path.join(__dirname, "..", "..", "../last_id.txt");
-const ids_path = path.join(__dirname, "..", "..", "../ids.txt");
+class IdManager {
+  private lastIdFilePath: string;
+  private idsFilePath: string;
 
-export const getId = async (typeToGet: "index" | "id" = "id") => {
-  let last_id_file = fs.existsSync(last_id_filePath);
-  let last_id: string = "0";
-
-  if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
-  else last_id = fs.readFileSync(last_id_filePath, "utf-8");
-
-  if (!fs.existsSync(ids_path)) {
-    let { data: ids } = await axios.get(
-      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-    );
-    fs.writeFileSync(ids_path, ids);
-  }
-  let ids: any = fs.readFileSync(ids_path, "utf-8");
-
-  ids = ids.split("\n");
-  let id = ids[0];
-
-  console.log("testing", parseInt(last_id));
-
-  if (parseInt(last_id) > 0) {
-    console.log("test");
-    const id_find = ids.find((id: string) => id === last_id);
-    if (id_find) id = id_find;
+  constructor() {
+    this.lastIdFilePath = path.join(__dirname, "..", "..", "../last_id.txt");
+    this.idsFilePath = path.join(__dirname, "..", "..", "../ids.txt");
   }
 
-  return typeToGet === "index" ? ids.indexOf(last_id) : id;
-};
-
-export const getNextId = async (id: string) => {
-  let last_id_file = fs.existsSync(last_id_filePath);
-  let last_id: string = "0";
-
-  if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
-  else last_id = fs.readFileSync(last_id_filePath, "utf-8");
-
-  if (!fs.existsSync(ids_path)) {
-    let { data: ids } = await axios.get(
-      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-    );
-    fs.writeFileSync(ids_path, ids);
-  }
-  let ids: any = fs.readFileSync(ids_path, "utf-8");
-
-  ids = ids.split("\n");
-  let id_index = ids.indexOf(last_id);
-  let next_id = ids[id_index + 1];
-
-  console.log(last_id);
-
-  if (!next_id) return undefined;
-
-  return next_id;
-};
-
-export const updateId = (id: string) => {
-  let last_id_file = fs.existsSync(last_id_filePath);
-  if (!last_id_file) fs.writeFileSync(last_id_filePath, "0");
-  fs.writeFileSync(last_id_filePath, id);
-};
-
-export const goThroughList = async (last_id_index: number, mapFN: Function) => {
-  const does_ids_exist = fs.existsSync(ids_path);
-
-  if (!does_ids_exist) {
-    let { data: ids } = await axios.get(
-      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-    );
-    fs.writeFileSync(ids_path, ids);
+  private readFileContent(filePath: string): string {
+    return fs.readFileSync(filePath, "utf-8");
   }
 
-  let ids: any = fs.readFileSync(ids_path, "utf-8");
-  ids = ids.split("\n");
-
-  // start looping through ids starting from id
-  for (let i = last_id_index; i < ids.length; i++) {
-    let id = ids[i];
-    await mapFN(id);
+  private writeFileContent(filePath: string, content: string): void {
+    fs.writeFileSync(filePath, content);
   }
-};
+
+  public async getId(typeToGet: "index" | "id" = "id"): Promise<number | string> {
+    let lastIdFileExists = fs.existsSync(this.lastIdFilePath);
+    let lastId: string = "0";
+
+    if (lastIdFileExists) {
+      lastId = fs.readFileSync(this.lastIdFilePath, "utf-8").trim();
+    } else {
+      // If the file doesn't exist, create it with an initial value of 0
+      fs.writeFileSync(this.lastIdFilePath, lastId, "utf-8");
+    }
+
+    if (!fs.existsSync(this.idsFilePath)) {
+      let { data: ids } = await axios.get(
+        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+      );
+      fs.writeFileSync(this.idsFilePath, ids, "utf-8");
+    }
+
+    let ids: string = fs.readFileSync(this.idsFilePath, "utf-8");
+
+    let id: string;
+
+    if (typeToGet === "index") {
+      const index = ids.split("\n").indexOf(lastId);
+
+      if (index === -1) {
+        console.log("Last ID not found in the list.");
+        return "0"; // Fallback to starting at index 0 if last ID is not found
+      }
+      id = index.toString();
+    } else {
+      id = lastId;
+    }
+
+    return id;
+  }
+
+  public async getNextId(id: string): Promise<string | undefined> {
+    const lastIdFileExists = fs.existsSync(this.lastIdFilePath);
+    const lastId = lastIdFileExists ? this.readFileContent(this.lastIdFilePath) : "0";
+
+    if (!fs.existsSync(this.idsFilePath)) {
+      const { data: ids } = await axios.get(
+        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+      );
+      this.writeFileContent(this.idsFilePath, ids);
+    }
+    const idsList = this.readFileContent(this.idsFilePath).split("\n");
+
+    const idIndex = idsList.indexOf(lastId);
+    const nextId = idsList[idIndex + 1];
+
+    if (!nextId) return undefined;
+
+    return nextId;
+  }
+
+  public updateId(id: string): void {
+    const lastIdFileExists = fs.existsSync(this.lastIdFilePath);
+    if (!lastIdFileExists) this.writeFileContent(this.lastIdFilePath, "0");
+    this.writeFileContent(this.lastIdFilePath, id);
+  }
+
+  public async goThroughList(lastId: string, mapFN: Function): Promise<void> {
+    const doesIdsExist = fs.existsSync(this.idsFilePath);
+
+    if (!doesIdsExist) {
+      let { data: ids } = await axios.get(
+        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+      );
+      fs.writeFileSync(this.idsFilePath, ids);
+    }
+
+    let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
+    ids = ids.split("\n");
+
+    let lastIdIndex = ids.indexOf(lastId);
+    if (lastIdIndex === -1) lastIdIndex = 0;
+
+    for (let i = lastIdIndex; i < ids.length; i++) {
+      let id = ids[i];
+      await mapFN(id);
+    }
+  }
+}
+
+export default IdManager;

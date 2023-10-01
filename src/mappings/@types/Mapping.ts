@@ -4,7 +4,7 @@ export type Matches = {
   gogoanime: MatchItem | null;
   kickassanime: MatchItem | null;
   aniwatch: MatchItem | null;
-  [x: string]: MatchItem | null;
+  [moduleName: string]: MatchItem | null;
 };
 
 export type MatchItem = {

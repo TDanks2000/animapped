@@ -129,4 +129,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+last_id.*
+/last_id.*
 last_id.txt
