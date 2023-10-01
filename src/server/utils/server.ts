@@ -6,6 +6,9 @@ import bodyParser from "@fastify/formbody";
 
 import routes from "../routes";
 import Logger from "./logger";
+import Console from "@tdanks2000/fancyconsolelog";
+
+const console = new Console();
 
 export const start = async () => {
   const app = Fastify({
@@ -25,6 +28,7 @@ export const start = async () => {
   const PORT = Number(config.PORT) ?? 5001;
 
   app.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
+    console.info(`Server listening on ${address}`);
     if (err) {
       app.log.error(err);
       process.exit(1);
