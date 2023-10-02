@@ -17,16 +17,22 @@ export class Database extends PrismaClient {
     });
 
     if (!findById?.anilist_id) {
-      await this.anime.create({
-        data: {
-          anilist_id: data.anilist_id,
-          title: data.title,
-          year: data.year,
-          mal_id: data.mal_id,
-          mappings: data.mappings,
-        },
-      });
-      console.info(`added ${data.title} to database`);
+      try {
+        await this.anime.create({
+          data: {
+            anilist_id: data.anilist_id,
+            title: data.title,
+            year: data.year,
+            mal_id: data.mal_id,
+            mappings: data.mappings,
+          },
+        });
+        console.info(`added ${data.title} to database`);
+      } catch (error) {
+        console.error(error);
+        console.info(`${data.title} already in database`);
+        return;
+      }
     } else {
       console.info(`${data.title} already in database`);
     }
