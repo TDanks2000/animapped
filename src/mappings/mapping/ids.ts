@@ -3,6 +3,8 @@ import path from "node:path";
 import axios from "axios";
 
 class IdManager {
+  total_ids: number = 0;
+
   private lastIdFilePath: string;
   private idsFilePath: string;
 
@@ -38,6 +40,7 @@ class IdManager {
     }
 
     let ids: string = fs.readFileSync(this.idsFilePath, "utf-8");
+    this.total_ids = ids.length;
 
     let id: string;
 

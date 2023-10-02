@@ -93,12 +93,20 @@ class Mapping {
         mappings: matches,
       });
 
+      const c = new Console();
+
+      const total_ids = this.idManager.total_ids;
+      const id_index = await this.idManager.getId("index");
+
+      const ids_left = total_ids - parseInt(id_index.toString());
+
+      c.info(`Mapped: ${id_index}/${total_ids}, ${ids_left} to go`);
+
       const nextId = await this.idManager.getNextId(id);
       if (nextId) this.idManager.updateId(nextId);
 
       const timeoutTime = this.timeout_time;
 
-      const c = new Console();
       c.setColor("redBright");
 
       c.log(`delaying for ${ms(timeoutTime, { long: true })} before next request`);
