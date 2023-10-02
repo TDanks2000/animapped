@@ -72,12 +72,14 @@ class Mapping {
 
   async start() {
     await this.idManager.goThroughList(this.last_id, async (id: string) => {
-      const searchFrom = await this.anilist.getMedia(id);
+      const searchFrom = await this.anilist.getMedia(id).catch((err) => {
+        return;
+      });
 
-      if (!searchFrom) return;
+      if (!searchFrom || !searchFrom?.title) return;
 
       let searchFromTitle = (await getTitle(searchFrom?.title)) || "";
-      if (!searchFromTitle.length) return null;
+      if (!searchFromTitle.length) return;
 
       if (!searchFrom?.year) return;
 

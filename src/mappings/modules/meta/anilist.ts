@@ -17,6 +17,8 @@ class Anilist extends BaseMetaModule {
   url: string = "https://anilist.co/";
 
   async search(keyword: string): Promise<AnimeModuleInfo[] | undefined> {
+    if (!keyword) return undefined;
+
     const searchResults: AnimeModuleInfo[] = [];
     const data = await anilist.search.anime(keyword);
 
@@ -51,6 +53,7 @@ class Anilist extends BaseMetaModule {
   }
 
   async getMedia(id: string): Promise<AnimeModuleInfo | undefined> {
+    if (!id) return undefined;
     const data: any = await anilist.media.anime(parseInt(id));
 
     if (!data?.data) return undefined;
