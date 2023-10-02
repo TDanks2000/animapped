@@ -16,7 +16,7 @@ export class Database extends PrismaClient {
       },
     });
 
-    if (!findById) {
+    if (!findById?.anilist_id) {
       await this.anime.create({
         data: {
           anilist_id: data.anilist_id,
@@ -27,6 +27,8 @@ export class Database extends PrismaClient {
         },
       });
       console.info(`added ${data.title} to database`);
+    } else {
+      console.info(`${data.title} already in database`);
     }
   };
 

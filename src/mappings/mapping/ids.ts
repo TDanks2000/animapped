@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
+import Console from "@tdanks2000/fancyconsolelog";
+
+const console = new Console();
 
 class IdManager {
   total_ids: number = 0;
@@ -86,24 +89,28 @@ class IdManager {
   }
 
   public async goThroughList(lastId: string, mapFN: Function): Promise<void> {
-    const doesIdsExist = fs.existsSync(this.idsFilePath);
+    try {
+      const doesIdsExist = fs.existsSync(this.idsFilePath);
 
-    if (!doesIdsExist) {
-      let { data: ids } = await axios.get(
-        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-      );
-      fs.writeFileSync(this.idsFilePath, ids);
-    }
+      if (!doesIdsExist) {
+        let { data: ids } = await axios.get(
+          "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+        );
+        fs.writeFileSync(this.idsFilePath, ids);
+      }
 
-    let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
-    ids = ids.split("\n");
+      let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
+      ids = ids.split("\n");
 
-    let lastIdIndex = ids.indexOf(lastId);
-    if (lastIdIndex === -1) lastIdIndex = 0;
+      let lastIdIndex = ids.indexOf(lastId);
+      if (lastIdIndex === -1) lastIdIndex = 0;
 
-    for (let i = lastIdIndex; i < ids.length; i++) {
-      let id = ids[i];
-      await mapFN(id);
+      for (let i = lastIdIndex; i < ids.length; i++) {
+        let id = ids[i];
+        await mapFN(id);
+      }
+    } catch (error) {
+      console.info(error);
     }
   }
 }
