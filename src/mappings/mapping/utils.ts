@@ -47,6 +47,7 @@ export class MappingUtils {
 
     console.info(`Searching ${this.module.name} for ${title}`);
     await this.search("title", searchThrough);
+    await this.search("year", searchThrough, { titleLanguage: language });
 
     if (
       !this.matches ||
@@ -61,10 +62,6 @@ export class MappingUtils {
         console.error(error);
       }
       await this.search("title", searchThrough!, { titleLanguage: language });
-    }
-
-    if (this.matches.length > 2 && this.search_from.year) {
-      await this.search("year", searchThrough!, { titleLanguage: language });
     }
 
     if (this.matches.length > 2 && this.search_from.format) {
@@ -134,7 +131,7 @@ export class MappingUtils {
         break;
       case "year":
         for await (const item of this.matches!) {
-          if (item.year > 0) continue;
+          if (item.year <= 0 || isNaN(item.year)) return;
           if (item.year === this.search_from.year) newMatches.push(item);
         }
         if (newMatches.length > 0) this.matches = newMatches;

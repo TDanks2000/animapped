@@ -37,7 +37,7 @@ class Gogoanime extends BaseAnimeModule {
     $("ul.items > li").each((i, el) => {
       const title = $(el).find("div.img a").attr("title")!.trim().replace(/\\n/g, "");
       const id = $(el).find("div.img a").attr("href")?.split("/")[2]!;
-      const year = parseInt($("p.released").text()?.split("Released: ")[1]) ?? 0;
+      const year = parseInt($(el).find("p.released").text()?.split("Released: ")[1]) ?? 0;
       const image = $(el).find("div.img a img").attr("src")!;
 
       const format: Format = Format.UNKNOWN;
