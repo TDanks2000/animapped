@@ -1,6 +1,6 @@
 import { FastifyInstance, RegisterOptions } from "fastify";
 import { prisma } from "../../utils";
-import { generateUniqueApiKey } from "../../helpers";
+import { checkIfAdmin, generateUniqueApiKey } from "../../helpers";
 import { Unauthorized, NotFound } from "http-errors";
 
 type CreateApiKeyData = {
@@ -11,11 +11,15 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   const db = prisma.apiKeys;
 
   fastify.put("/", async (request, reply) => {
+    await checkIfAdmin(request, reply);
+
     const body = request.body as CreateApiKeyData;
     const discord_id = body?.discord_id;
 
     if (!discord_id) {
-      return reply.send(Unauthorized("You have not specified a discord id to link the api key to"));
+      return reply.send(
+        Unauthorized("You haven't provided a Discord ID to associate with the API key.")
+      );
     }
 
     const find_discord_id = await db.findUnique({
@@ -25,7 +29,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     });
 
     if (find_discord_id) {
-      return reply.send(Unauthorized("Discord ID already exists"));
+      return reply.send(Unauthorized("The Discord ID already exists."));
     }
 
     // Generate a unique API key
@@ -67,18 +71,18 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   });
 
   fastify.delete("/", async (request, reply) => {
-    const params = request.body as CreateApiKeyData;
-    if (!params.discord_id) {
+    await checkIfAdmin(request, reply);
+
+    const body = request.body as CreateApiKeyData;
+    if (!body.discord_id) {
       return reply.send(
-        Unauthorized(
-          "You have not specified a discord id to delete the api key that is linked to the discord id"
-        )
+        Unauthorized("You haven't specified a Discord ID to remove the API key associated with it.")
       );
     }
 
     const doesExist = await db.findUnique({
       where: {
-        discord_id: params.discord_id,
+        discord_id: body.discord_id,
       },
     });
 
@@ -86,13 +90,13 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
 
     const didDelete = await db.deleteMany({
       where: {
-        discord_id: params.discord_id,
+        discord_id: body.discord_id,
       },
     });
 
     if (didDelete) {
       return reply.send({
-        message: `Delted API Key for ${params.discord_id}`,
+        message: `Delted API Key for ${body.discord_id}`,
       });
     }
   });
