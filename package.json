@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "tsc && node ./dist/main.js",
     "dev": "nodemon ./src/main.ts",
-    "update": "git stash && git pull && pm2 restart 4"
+    "update": "git pull && pm2 restart 4"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.0",
