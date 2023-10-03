@@ -88,7 +88,7 @@ class IdManager {
     this.writeFileContent(this.lastIdFilePath, id);
   }
 
-  public async goThroughList(lastId: string, mapFN: Function): Promise<void> {
+  public async goThroughList(lastId: string, mapFN: (id: string) => Promise<void>): Promise<void> {
     try {
       const doesIdsExist = fs.existsSync(this.idsFilePath);
 
@@ -102,15 +102,25 @@ class IdManager {
       let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
       ids = ids.split("\n");
 
-      let lastIdIndex = ids.indexOf(lastId);
-      if (lastIdIndex === -1) lastIdIndex = 0;
+      let startIndex = 0;
 
-      for (let i = lastIdIndex; i < ids.length; i++) {
-        let id = ids[i];
-        await mapFN(id);
+      if (lastId !== "all") {
+        const lastIdIndex = ids.indexOf(lastId);
+        if (lastIdIndex !== -1) {
+          startIndex = lastIdIndex;
+        } else {
+          console.log(`Last ID (${lastId}) not found in the list. Starting from the beginning.`);
+        }
+      }
+
+      for (let i = startIndex; i < ids.length; i++) {
+        const id = ids[i].trim();
+        if (id) {
+          await mapFN(id);
+        }
       }
     } catch (error) {
-      console.info(error);
+      console.error(error);
     }
   }
 }

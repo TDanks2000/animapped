@@ -30,11 +30,11 @@ export class Database extends PrismaClient {
         console.info(`added ${data.title} to database`);
       } catch (error) {
         console.error(error);
-        console.info(`${data.title} already in database`);
+        console.warn(`${data.title} already in database`);
         return;
       }
     } else {
-      console.info(`${data.title} already in database`);
+      console.warn(`${data.title} already in database`);
     }
   };
 

@@ -8,6 +8,8 @@ import { MODULES } from "../modules";
 import { Database } from "../database";
 import ms from "ms";
 
+const c = new Console();
+
 class Mapping {
   private idManager: IdManager;
   private last_id: string = "0";
@@ -34,13 +36,11 @@ class Mapping {
     return mapping;
   }
 
-  private async populateMatches(Module: any, searchFrom: any, matches: Matches) {
-    Module.updateProxy(this.proxies.getRandomProxy());
-    const map = new MappingUtils(searchFrom, Module);
+  private async populateMatches(module: any, searchFrom: any, matches: Matches) {
+    const module_name = module.name?.toLowerCase();
+    module.updateProxy(this.proxies.getRandomProxy());
 
-    let match = await map.matchMedia();
-
-    const module_name = Module.name?.toLowerCase();
+    let match = await this.matchModuleMedia(module, searchFrom);
 
     if (match) {
       match.forEach((item) => {
@@ -49,15 +49,20 @@ class Mapping {
           [item.id]: {
             id: item.id,
             title: item.title ?? item.altTitles![0],
-            module: Module.name,
+            module: module.name,
           },
         };
       });
     }
   }
 
+  private async matchModuleMedia(module: any, searchFrom: any) {
+    const map = new MappingUtils(searchFrom, module);
+    return await map.matchMedia();
+  }
+
   async match(searchFrom: any, title: string) {
-    let matches: Matches = {
+    const matches: Matches = {
       gogoanime: null,
       kickassanime: null,
       aniwatch: null,
@@ -72,49 +77,54 @@ class Mapping {
 
   async start() {
     await this.idManager.goThroughList(this.last_id, async (id: string) => {
-      const searchFrom = await this.anilist.getMedia(id).catch((err) => {
-        return;
-      });
+      try {
+        const searchFrom = await this.anilist.getMedia(id);
 
-      if (!searchFrom || !searchFrom?.title) return;
+        if (!searchFrom || !searchFrom.title) {
+          c.warn(`Skipping ID ${id} - Invalid data`);
+          return;
+        }
 
-      let searchFromTitle = (await getTitle(searchFrom?.title)) || "";
-      if (!searchFromTitle.length) return;
+        let searchFromTitle = (await getTitle(searchFrom.title)) || "";
+        if (!searchFromTitle.length) {
+          c.warn(`Skipping ID ${id} - Empty title`);
+          return;
+        }
 
-      if (!searchFrom?.year) return;
+        if (!searchFrom.year) {
+          c.warn(`Skipping ID ${id} - Missing year`);
+          return;
+        }
 
-      const matches = await this.match(searchFrom, searchFromTitle[0]);
+        const matches = await this.match(searchFrom, searchFromTitle[0]);
 
-      await this.database.FillWithData({
-        anilist_id: searchFrom.id!,
-        mal_id: searchFrom.malId!,
-        title: searchFromTitle,
-        year: searchFrom.year.toString(),
-        mappings: matches,
-      });
+        await this.database.FillWithData({
+          anilist_id: searchFrom.id!,
+          mal_id: searchFrom.malId!,
+          title: searchFromTitle,
+          year: searchFrom.year.toString(),
+          mappings: matches,
+        });
 
-      const c = new Console();
+        const id_index = await this.idManager.getId("index");
+        const ids_left = this.idManager.total_ids - parseInt(id_index.toString());
 
-      const total_ids = this.idManager.total_ids;
-      const id_index = await this.idManager.getId("index");
+        c.info(`Mapped: ${id_index}/${this.idManager.total_ids}, ${ids_left} to go`);
 
-      const ids_left = total_ids - parseInt(id_index.toString());
+        const nextId = await this.idManager.getNextId(id);
+        if (nextId) {
+          this.idManager.updateId(nextId);
+        }
 
-      c.info(`Mapped: ${id_index}/${total_ids}, ${ids_left} to go`);
+        const timeoutTime = this.timeout_time;
 
-      const nextId = await this.idManager.getNextId(id);
-      if (nextId) this.idManager.updateId(nextId);
+        c.warn(`Delaying for ${ms(timeoutTime, { long: true })} before next request`);
+        await delay(timeoutTime);
 
-      const timeoutTime = this.timeout_time;
-
-      c.setColor("redBright");
-
-      c.log(`delaying for ${ms(timeoutTime, { long: true })} before next request`);
-
-      await delay(timeoutTime);
-
-      c.setColor("greenBright");
-      c.log(`finished delaying for ${ms(timeoutTime, { long: true })} starting next request`);
+        c.info(`Finished delaying for ${ms(timeoutTime, { long: true })}. Starting next request`);
+      } catch (error) {
+        c.error(`Error processing ID ${id}:`, error);
+      }
     });
   }
 

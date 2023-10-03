@@ -31,8 +31,8 @@ export class MappingUtils {
     let language: TitleLanguageOptions = "romaji";
     let title = (await getTitle(this.search_from.title, language))!;
 
-    if (this.search_from.status === MediaStatus.NOT_YET_RELEASED) {
-      console.error(`Skipping ${title} because it is not yet released`);
+    if (this.search_from.status?.toLowerCase() === MediaStatus.NOT_YET_RELEASED.toLowerCase()) {
+      console.warn(`Skipping ${title} because it is not yet released`);
       return [];
     }
 
