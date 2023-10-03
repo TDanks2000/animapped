@@ -10,6 +10,26 @@ type CreateApiKeyData = {
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   const db = prisma.apiKeys;
 
+  fastify.get("/", async (request, reply) => {
+    await checkIfAdmin(request, reply);
+
+    const { discord_id } = request.query as {
+      discord_id: string;
+    };
+
+    const data = await db.findUnique({
+      where: {
+        discord_id,
+      },
+    });
+
+    if (!data) return NotFound("Discord ID does not exist");
+
+    return reply.send({
+      message: `your api key is ${data.api_key}`,
+    });
+  });
+
   fastify.put("/", async (request, reply) => {
     await checkIfAdmin(request, reply);
 
