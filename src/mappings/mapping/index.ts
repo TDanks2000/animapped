@@ -144,11 +144,12 @@ class Mapping {
   }
 }
 
-(async () => {
-  const mapping = await Mapping.create();
-  const matches = await mapping.test("113415");
-  console.log(matches);
+// (async () => {
+//   const mapping = await Mapping.create();
+//   const matches = await mapping.test("113415");
+//   console.log(matches);
 
-  process.exit(1);
-})();
+//   process.exit(1);
+// })();
+
 export { Mapping };
