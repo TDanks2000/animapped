@@ -26,11 +26,7 @@ export const checkIfAdmin = async (request: FastifyRequest, reply: FastifyReply)
   const { api_key } = query;
 
   if (!api_key) {
-    return reply.send(
-      Forbidden(
-        "You haven't provided an API key, so we're unable to delete the associated API key linked to the Discord ID."
-      )
-    );
+    return reply.send(Forbidden("You haven't provided an API key"));
   }
 
   const find_api_key = await prisma.apiKeys.findUnique({
@@ -45,5 +41,24 @@ export const checkIfAdmin = async (request: FastifyRequest, reply: FastifyReply)
 
   if (!find_api_key.is_admin) {
     return reply.send(Unauthorized("You do not have administrator privileges."));
+  }
+};
+
+export const checkForApiKey = async (request: FastifyRequest, reply: FastifyReply) => {
+  const query = request.query as { api_key: string };
+  const { api_key } = query;
+
+  if (!api_key) {
+    return reply.send(Forbidden("You haven't provided an API key"));
+  }
+
+  const find_api_key = await prisma.apiKeys.findUnique({
+    where: {
+      api_key,
+    },
+  });
+
+  if (!find_api_key) {
+    return reply.send(NotFound("The specified API key does not exist."));
   }
 };

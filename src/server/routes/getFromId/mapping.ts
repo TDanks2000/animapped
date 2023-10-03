@@ -1,9 +1,12 @@
 import { FastifyInstance, RegisterOptions } from "fastify";
 import { prisma } from "../../utils";
 import { NO_DATA_ANIME } from "../../utils/errors";
+import { checkForApiKey } from "../../helpers";
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   fastify.get("/gogoanime/:gogoanime_id", async (request, reply) => {
+    await checkForApiKey(request, reply);
+
     const { gogoanime_id } = request.params as {
       gogoanime_id: string;
     };
@@ -26,6 +29,8 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   });
 
   fastify.get("/kaa/:kaa_id", async (request, reply) => {
+    await checkForApiKey(request, reply);
+
     const { kaa_id } = request.params as {
       kaa_id: string;
     };
@@ -48,6 +53,8 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   });
 
   fastify.get("/aniwatch/:aniwatch_id", async (request, reply) => {
+    await checkForApiKey(request, reply);
+
     const { aniwatch_id } = request.params as {
       aniwatch_id: string;
     };
