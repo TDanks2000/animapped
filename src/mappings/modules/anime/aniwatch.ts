@@ -34,6 +34,7 @@ class Aniwatch extends BaseAnimeModule {
     const { data } = await axios.get(
       `${this.url}/search?keyword=${encodeURIComponent(keyword)}&page=${page}`,
       {
+        timeout: 10000,
         headers: {
           "User-Agent": USER_AGENT,
         },

@@ -43,4 +43,10 @@ class Start {
         const start = new Start();
         await start.start();
     });
+    process.on("unhandledRejection", (reason, promise) => {
+        console.error("Unhandled Promise rejection:", reason);
+    });
+    process.on("uncaughtException", (error) => {
+        console.error("Uncaught Exception:", error);
+    });
 })();

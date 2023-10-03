@@ -25,6 +25,7 @@ class Gogoanime extends BaseAnimeModule {
     const { data } = await axios.get(
       `${this.url}/search.html?keyword=${encodeURIComponent(keyword)}&page=${page}`,
       {
+        timeout: 10000,
         headers: {
           "User-Agent": USER_AGENT,
         },

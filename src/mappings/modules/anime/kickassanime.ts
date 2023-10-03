@@ -31,6 +31,7 @@ class Kickassanime extends BaseAnimeModule {
 
     const { data } = await axios.request({
       method: "POST",
+      timeout: 10000,
       url: `${this.url}/api/search`,
       headers: this.headers,
       data: JSON.stringify({
