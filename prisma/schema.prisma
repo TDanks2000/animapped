@@ -22,6 +22,18 @@ model Anime {
   updated_at DateTime @updatedAt
 }
 
+model AnimeV2 {
+  id         String  @id @unique @default(uuid())
+  anilist_id String  @unique
+  mal_id     String? @unique
+  title      String
+  year       String
+  mappings   Json?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model apiKeys {
   id         String  @id @default(cuid())
   api_key    String  @unique

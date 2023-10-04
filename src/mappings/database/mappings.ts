@@ -10,7 +10,7 @@ export class Database extends PrismaClient {
   }
 
   public FillWithData = async (data: Data) => {
-    const findById = await this.anime.findFirst({
+    const findById = await this.animeV2.findFirst({
       where: {
         anilist_id: data.anilist_id,
       },
@@ -45,7 +45,7 @@ export class Database extends PrismaClient {
     //   },
     // });
 
-    this.anime.update({
+    this.animeV2.update({
       where: {
         anilist_id: data.anilist_id,
       },

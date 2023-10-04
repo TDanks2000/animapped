@@ -2,7 +2,7 @@ import { FastifyInstance, RegisterOptions } from "fastify";
 import { prisma } from "../../utils";
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
-  const db = prisma.anime;
+  const db = prisma.animeV2;
 
   fastify.get("/", async (request, reply) => {
     try {

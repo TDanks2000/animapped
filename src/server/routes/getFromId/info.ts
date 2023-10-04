@@ -4,7 +4,7 @@ import { NO_DATA_ANIME } from "../../utils/errors";
 import { checkForApiKey } from "../../helpers";
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
-  const db = prisma.anime;
+  const db = prisma.animeV2;
 
   fastify.get("/anilist/:anilist_id", async (request, reply) => {
     await checkForApiKey(request, reply);
