@@ -101,18 +101,18 @@ class MappingQueueHandler {
 
         if (!searchFrom || !searchFrom.title) {
           c.warn(`Skipping ID ${id} - Invalid data`);
-          return;
+          continue;
         }
 
         let searchFromTitle = (await getTitle(searchFrom.title)) || "";
         if (!searchFromTitle.length) {
           c.warn(`Skipping ID ${id} - Empty title`);
-          return;
+          continue;
         }
 
         if (!searchFrom.year) {
           c.warn(`Skipping ID ${id} - Missing year`);
-          return;
+          continue;
         }
 
         const matches = await this.match(searchFrom, searchFromTitle[0]);
