@@ -18,7 +18,7 @@ class MappingQueueHandler {
   // private mappingFN: (id: string) => Promise<void>;
 
   private paused: boolean = false;
-  private delay: number = ms("4s");
+  private delay: number = ms("7s");
 
   public running: boolean = false;
 
@@ -99,7 +99,7 @@ class MappingQueueHandler {
       try {
         const searchFrom = await this.anilist.getMedia(id);
 
-        if (!searchFrom || !searchFrom.title) {
+        if (!searchFrom) {
           c.warn(`Skipping ID ${id} - Invalid data`);
           continue;
         }

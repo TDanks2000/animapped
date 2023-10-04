@@ -94,7 +94,7 @@ export type Anime = {
   slug: string;
   coverImage: string | null;
   bannerImage: string | null;
-  trailer: string | null;
+  trailer: string | Trailer | undefined;
   status: MediaStatus | null;
   season: Season;
   title: ITitleLanguageOptions;
@@ -123,6 +123,12 @@ export type Anime = {
   totalEpisodes?: number;
   tags: string[];
 };
+
+export interface Trailer {
+  id: string;
+  site?: string;
+  thumbnail?: string;
+}
 
 export type TitleLanguageOptions = "english" | "native" | "romaji" | "userPreferred";
 

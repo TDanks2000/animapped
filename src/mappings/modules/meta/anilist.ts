@@ -28,20 +28,25 @@ class Anilist extends BaseMetaModule {
       searchResults.push({
         id: item?.id.toString(),
         malId: item?.idMal?.toString(),
-        title: item?.title as ITitleLanguageOptions,
-        synonyms: [],
+        title: {
+          romaji: item?.title.romaji!,
+          english: item?.title.english!,
+          native: item?.title.native!,
+          userPreferred: item?.title.userPreferred!,
+        },
+        synonyms: (item as any)?.synonyms,
         currentEpisode: item?.episodes,
         bannerImage: item?.bannerImage,
         coverImage: item?.coverImage?.large,
         color: item?.coverImage.large,
         season: item?.season as Season,
-        year: item?.seasonYear,
+        year: item.startDate.year ?? item?.seasonYear,
         status: item?.status as any,
         genres: item?.genres as Genres[],
         description: item?.description,
         format: item?.format as Format,
-        duration: null,
-        trailer: null,
+        duration: item?.duration,
+        trailer: undefined,
         countryOfOrigin: null,
         tags: item?.tags?.map((tag) => tag.name),
         rating: item?.averageScore,
@@ -61,26 +66,40 @@ class Anilist extends BaseMetaModule {
     const item = data?.data?.Media;
 
     const info: AnimeModuleInfo = {
-      title: item?.title!,
-      synonyms: [],
-      currentEpisode: item?.episodes,
+      id: item?.id.toString(),
+      malId: item?.idMal?.toString(),
+      title: {
+        romaji: item?.title.romaji!,
+        english: item?.title.english!,
+        native: item?.title.native!,
+        userPreferred: item?.title.userPreferred!,
+      },
+      synonyms: (item as any)?.synonyms,
+      currentEpisode: item?.nextAiringEpisode?.episode
+        ? item.nextAiringEpisode?.episode - 1
+        : item.Media?.episodes,
+      totalEpisodes: item?.episodes ?? item?.nextAiringEpisode?.episode - 1,
       bannerImage: item?.bannerImage,
-      coverImage: item?.coverImage?.large,
-      color: item?.coverImage.large,
+      coverImage:
+        item?.coverImage?.extraLarge ?? item?.coverImage?.large ?? item?.coverImage?.medium,
+      color: item?.coverImage?.color,
       season: item?.season as Season,
-      year: item?.seasonYear,
+      year: item.startDate.year ?? item?.seasonYear,
       status: item?.status as any,
       genres: item?.genres as Genres[],
       description: item?.description,
       format: item?.format as Format,
-      duration: null,
-      trailer: null,
-      countryOfOrigin: null,
+      duration: item?.duration,
+      trailer:
+        {
+          id: item?.trailer.id,
+          site: item?.trailer?.site,
+          thumbnail: item?.trailer?.thumbnail,
+        } ?? undefined,
+      countryOfOrigin: item.countryOfOrigin ?? undefined,
       tags: item?.tags?.map((tag: any) => tag.name),
       rating: item?.averageScore,
       popularity: item?.popularity,
-      id: item?.id.toString(),
-      malId: item?.idMal?.toString(),
     };
 
     return info;
