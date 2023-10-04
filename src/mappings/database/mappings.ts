@@ -18,7 +18,7 @@ export class Database extends PrismaClient {
 
     if (!findById?.anilist_id) {
       try {
-        await this.anime.create({
+        await this.animeV2.create({
           data: {
             anilist_id: data.anilist_id,
             title: data.title,
