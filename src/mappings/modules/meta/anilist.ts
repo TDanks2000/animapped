@@ -84,19 +84,20 @@ class Anilist extends BaseMetaModule {
         item?.coverImage?.extraLarge ?? item?.coverImage?.large ?? item?.coverImage?.medium,
       color: item?.coverImage?.color,
       season: item?.season as Season,
-      year: item.startDate.year ?? item?.seasonYear,
+      year: item?.startDate?.year ?? item?.seasonYear,
       status: item?.status as any,
       genres: item?.genres as Genres[],
       description: item?.description,
       format: item?.format as Format,
       duration: item?.duration,
-      trailer:
-        {
-          id: item?.trailer.id,
-          site: item?.trailer?.site,
-          thumbnail: item?.trailer?.thumbnail,
-        } ?? undefined,
-      countryOfOrigin: item.countryOfOrigin ?? undefined,
+      trailer: item?.trailer?.id
+        ? {
+            id: item?.trailer?.id,
+            site: item?.trailer?.site,
+            thumbnail: item?.trailer?.thumbnail,
+          }
+        : undefined,
+      countryOfOrigin: item?.countryOfOrigin ?? undefined,
       tags: item?.tags?.map((tag: any) => tag.name),
       rating: item?.averageScore,
       popularity: item?.popularity,

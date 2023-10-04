@@ -139,6 +139,7 @@ class MappingQueueHandler {
       } catch (error) {
         c.warn(`Error processing ID ${id}:`);
         c.error((error as Error).message);
+        console.error(error);
       }
     }
 
