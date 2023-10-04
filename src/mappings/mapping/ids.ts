@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 import Console from "@tdanks2000/fancyconsolelog";
+import { MappingQueueHandler } from "./queue";
 
 const console = new Console();
 
@@ -88,41 +89,39 @@ class IdManager {
     this.writeFileContent(this.lastIdFilePath, id);
   }
 
-  public async goThroughList(lastId: string, mapFN: (id: string) => Promise<void>): Promise<void> {
-    try {
-      const doesIdsExist = fs.existsSync(this.idsFilePath);
+  public async goThroughList(): Promise<void> {
+    const queue = new MappingQueueHandler();
 
-      if (!doesIdsExist) {
-        let { data: ids } = await axios.get(
-          "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-        );
-        fs.writeFileSync(this.idsFilePath, ids);
-      }
+    const doesIdsExist = fs.existsSync(this.idsFilePath);
 
-      let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
-      ids = ids.split("\n");
-
-      let startIndex = 0;
-
-      if (lastId !== "all") {
-        const lastIdIndex = ids.indexOf(lastId);
-        if (lastIdIndex !== -1) {
-          startIndex = lastIdIndex;
-        } else {
-          console.log(`Last ID (${lastId}) not found in the list. Starting from the beginning.`);
-        }
-      }
-
-      for (let i = startIndex; i < ids.length; i++) {
-        const id = ids[i].trim();
-        if (id) {
-          await mapFN(id);
-        }
-      }
-    } catch (error) {
-      console.error(error);
+    if (!doesIdsExist) {
+      let { data: ids } = await axios.get(
+        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+      );
+      fs.writeFileSync(this.idsFilePath, ids);
     }
+
+    let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
+    ids = ids.split("\n");
+
+    const lastId = await this.getId("id");
+    if (lastId) {
+      const index = ids.indexOf(lastId.toString());
+      ids = ids.slice(index + 1);
+    }
+
+    for await (const id of ids) {
+      queue.add(id);
+    }
+
+    await queue.start();
   }
 }
+
+// (async () => {
+//   const idManager = new IdManager();
+
+//   const id = await idManager.goThroughList();
+// })();
 
 export default IdManager;

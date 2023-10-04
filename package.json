@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node ./dist/main.js",
+    "start": "tsc && node --max-old-space-size=7000 ./dist/main.js",
     "dev": "nodemon ./src/main.ts",
-    "update": "git pull && pm2 restart 4"
+    "update": "git pull && pm2 restart animapped"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.0",
