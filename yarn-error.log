@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs add http-errors
+  C:\Program Files\nodejs\node.exe C:\Users\Tommy\.yarn\releases\yarn-1.22.19.cjs add node-cron
 
 PATH: 
-  C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.7.0_x64__8wekyb3d8bbwe;C:\Program Files\Microsoft\jdk-11.0.18.10-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\jdk/bin;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.6.0_x64__8wekyb3d8bbwe;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.4.0_x64__8wekyb3d8bbwe;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\GitHub CLI\;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\P;C:\Prog;C:\Program Files\Git\cmd;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Tommy\AppData\Local\Android\Sdk\tools;C:\Users\Tommy\.console-ninja\.bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\;C:\Users\Tommy\.cargo\bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\GitHubDesktop\bin;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Exercism;C:\Users\Tommy\AppData\Local\Programs\oh-my-posh\bin;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\gitkraken\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2023.2.1\bin;;C:\Users\Tommy\AppData\Roaming\npm;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs
+  C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.7.0_x64__8wekyb3d8bbwe;C:\Program Files\Microsoft\jdk-11.0.18.10-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\jdk/bin;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.6.0_x64__8wekyb3d8bbwe;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.3.4.0_x64__8wekyb3d8bbwe;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\GitHub CLI\;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\P;C:\Prog;C:\Program Files\Git\cmd;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Tommy\AppData\Local\Android\Sdk\tools;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Tommy\AppData\Local\Programs\Python\Python310\;C:\Users\Tommy\.cargo\bin;C:\Users\Tommy\AppData\Local\pnpm;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\GitHubDesktop\bin;C:\Users\Tommy\AppData\Local\Microsoft\WindowsApps;C:\Users\Tommy\.dotnet\tools;C:\Users\Tommy\AppData\Local\Android\Sdk\platform-tools;C:\ffmpeg\bin;C:\Exercism;C:\Users\Tommy\AppData\Local\Programs\oh-my-posh\bin;C:\Program Files\VideoLAN\VLC\;C:\src\Flutter\bin;C:\php;C:\Users\Tommy\AppData\Roaming\nvm;C:\Users\Tommy\AppData\Local\gitkraken\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2023.2.1\bin;;C:\Users\Tommy\AppData\Roaming\npm;C:\Users\Tommy\AppData\Roaming\nvm;C:\Program Files\nodejs
 
 Yarn version: 
   1.22.19
@@ -24,9 +24,9 @@ npm manifest:
     "license": "MIT",
     "scripts": {
       "build": "tsc",
-      "start": "tsc && node ./dist/main.js",
+      "start": "tsc && node --max-old-space-size=7000 ./dist/main.js",
       "dev": "nodemon ./src/main.ts",
-      "update": "git stash && git pull && pm2 restart 4"
+      "update": "git pull && pm2 restart animapped"
     },
     "dependencies": {
       "@fastify/cors": "^8.4.0",
@@ -41,12 +41,14 @@ npm manifest:
       "fastify": "^4.23.2",
       "fastify-plugin": "^4.5.1",
       "figlet": "^1.6.0",
+      "http-errors": "^2.0.0",
       "https-proxy-agent": "^7.0.1",
       "ioredis": "^5.3.2",
       "ms": "^2.1.3"
     },
     "devDependencies": {
       "@types/figlet": "^1.5.6",
+      "@types/http-errors": "^2.0.2",
       "@types/ms": "^0.7.32",
       "@types/node": "^20.7.2",
       "prisma": "^5.3.1",
@@ -191,6 +193,11 @@ Lockfile:
     version "1.5.6"
     resolved "https://registry.yarnpkg.com/@types/figlet/-/figlet-1.5.6.tgz#fd6e71c48ffa83953aaf401c8ff179c2a5fabc9f"
     integrity sha512-AOdn9cKJGXpqfHeif16xeGMwWefB4nsOyxkdRMpc+PEP3nUxzu3psJfIqhjrCNW4Sejt5i6rISWmEwK0sw03mA==
+  
+  "@types/http-errors@^2.0.2":
+    version "2.0.2"
+    resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.2.tgz#a86e00bbde8950364f8e7846687259ffcd96e8c2"
+    integrity sha512-lPG6KlZs88gef6aD85z3HNkztpj7w2R7HmR3gygjfXCQmsLloWNARFkMuzKiiY8FGdh1XDpgBdrSf4aKDiA7Kg==
   
   "@types/ms@^0.7.32":
     version "0.7.32"
@@ -416,6 +423,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/denque/-/denque-2.1.0.tgz#e93e1a6569fb5e66f16a3c2a2964617d349d6ab1"
     integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
   
+  depd@2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
+    integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
+  
   diff@^4.0.1:
     version "4.0.2"
     resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
@@ -602,6 +614,17 @@ Lockfile:
       domutils "^3.0.1"
       entities "^4.4.0"
   
+  http-errors@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-2.0.0.tgz#b7774a1486ef73cf7667ac9ae0858c012c57b9d3"
+    integrity sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==
+    dependencies:
+      depd "2.0.0"
+      inherits "2.0.4"
+      setprototypeof "1.2.0"
+      statuses "2.0.1"
+      toidentifier "1.0.1"
+  
   https-proxy-agent@^7.0.1:
     version "7.0.1"
     resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-7.0.1.tgz#0277e28f13a07d45c663633841e20a40aaafe0ab"
@@ -614,6 +637,11 @@ Lockfile:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
     integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
+  
+  inherits@2.0.4:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
+    integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
   
   ioredis@^5.3.2:
     version "5.3.2"
@@ -884,6 +912,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.6.0.tgz#131921e50f62ff1a66a461d7d62d7b21d5d15a51"
     integrity sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==
   
+  setprototypeof@1.2.0:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
+    integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
+  
   sonic-boom@^3.1.0:
     version "3.4.0"
     resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-3.4.0.tgz#8582d1385ea3bf79ca953329043bfbdbabe58eb9"
@@ -900,6 +933,11 @@ Lockfile:
     version "2.1.0"
     resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-2.1.0.tgz#8953fc05359868a77b5b9739a665c5977bb7df45"
     integrity sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==
+  
+  statuses@2.0.1:
+    version "2.0.1"
+    resolved "https://registry.yarnpkg.com/statuses/-/statuses-2.0.1.tgz#55cb000ccf1d48728bd23c685a063998cf1a1b63"
+    integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
   
   string_decoder@^1.3.0:
     version "1.3.0"
@@ -926,6 +964,11 @@ Lockfile:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/toad-cache/-/toad-cache-3.2.0.tgz#8221a1906ce7bd18cd56b22f5603bcf9e38b54f9"
     integrity sha512-Hj5zSqBS6OHbZoQk9IU8VqIr+0JUpwzunnwSlFJhG8aJSInYUMEuzItl3kJsGteTPd1qtflafdRHlRtUazYeqg==
+  
+  toidentifier@1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.1.tgz#3be34321a88a820ed1bd80dfaa33e479fbb8dd35"
+    integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
   
   ts-node@^10.9.1:
     version "10.9.1"

@@ -2,7 +2,7 @@ import Console from "@tdanks2000/fancyconsolelog";
 import Anilist from "../modules/meta/anilist";
 import IdManager from "./ids";
 import { MappingUtils } from "./utils";
-import { Proxies, delay, getTitle } from "../utils";
+import { Proxies, StateManager, delay, getTitle } from "../utils";
 import { Matches, ModuleIds, ModuleList } from "../@types";
 import { MODULES } from "../modules";
 import { Database } from "../database";
@@ -17,8 +17,11 @@ class Mapping {
 
   private proxies: Proxies = new Proxies();
 
-  constructor(timeout_time: number | string = "4s") {
-    this.idManager = new IdManager();
+  private stateManager: StateManager;
+
+  constructor(timeout_time: number | string = "4s", stateManager: StateManager) {
+    this.idManager = new IdManager(stateManager);
+    this.stateManager = stateManager;
     this.proxies.start();
     this.timeout_time = typeof timeout_time === "string" ? ms(timeout_time) : timeout_time;
   }
@@ -28,8 +31,8 @@ class Mapping {
     this.last_id = String(lastId);
   }
 
-  static async create(timeout_time?: number) {
-    const mapping = new Mapping(timeout_time);
+  static async create(stateManager: StateManager, timeout_time?: number | string) {
+    const mapping = new Mapping(timeout_time, stateManager);
     await mapping.init();
     return mapping;
   }

@@ -3,6 +3,7 @@ import path from "node:path";
 import axios from "axios";
 import Console from "@tdanks2000/fancyconsolelog";
 import { MappingQueueHandler } from "./queue";
+import { StateManager } from "../utils";
 
 const console = new Console();
 
@@ -12,9 +13,13 @@ class IdManager {
   private lastIdFilePath: string;
   private idsFilePath: string;
 
-  constructor() {
+  private stateManager: StateManager;
+
+  constructor(stateManager: StateManager) {
     this.lastIdFilePath = path.join(__dirname, "..", "..", "../last_id.txt");
     this.idsFilePath = path.join(__dirname, "..", "..", "../ids.txt");
+
+    this.stateManager = stateManager;
   }
 
   private readFileContent(filePath: string): string {
@@ -90,16 +95,12 @@ class IdManager {
   }
 
   public async goThroughList(): Promise<void> {
-    const queue = new MappingQueueHandler();
+    const queue = new MappingQueueHandler(this.stateManager);
 
-    const doesIdsExist = fs.existsSync(this.idsFilePath);
-
-    if (!doesIdsExist) {
-      let { data: ids } = await axios.get(
-        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
-      );
-      fs.writeFileSync(this.idsFilePath, ids);
-    }
+    let { data: ids_GH } = await axios.get(
+      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+    );
+    fs.writeFileSync(this.idsFilePath, ids_GH);
 
     let ids: string | string[] = fs.readFileSync(this.idsFilePath, "utf-8");
     ids = ids.split("\n");

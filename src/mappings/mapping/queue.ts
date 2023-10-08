@@ -1,5 +1,5 @@
 import ms from "ms";
-import { delay, getTitle } from "../utils";
+import { StateManager, delay, getTitle } from "../utils";
 import Anilist from "../modules/meta/anilist";
 import { MappingUtils } from "./utils";
 import Console from "@tdanks2000/fancyconsolelog";
@@ -17,16 +17,16 @@ class MappingQueueHandler {
   private queue: Set<string> = new Set<string>();
   // private mappingFN: (id: string) => Promise<void>;
 
-  private paused: boolean = false;
   private delay: number = ms("7s");
-
-  public running: boolean = false;
 
   private database: Database = new Database();
   private idManager: IdManager;
 
-  constructor() {
-    this.idManager = new IdManager();
+  private stateManager: StateManager;
+
+  constructor(stateManager: StateManager) {
+    this.idManager = new IdManager(stateManager);
+    this.stateManager = stateManager;
   }
 
   setDelay(time: number | string) {
@@ -34,12 +34,24 @@ class MappingQueueHandler {
     this.delay = number;
   }
 
-  pause() {
-    this.paused = true;
+  get pause() {
+    return this.stateManager.pause();
   }
 
-  unpause() {
-    this.paused = false;
+  get unpause() {
+    return this.stateManager.resume();
+  }
+
+  get paused() {
+    return this.stateManager.paused === true;
+  }
+
+  get running() {
+    return this.stateManager.running;
+  }
+
+  set running(bool: boolean) {
+    this.running = bool;
   }
 
   add(id: string) {
