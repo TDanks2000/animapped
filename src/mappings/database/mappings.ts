@@ -1,3 +1,4 @@
+import { StateManager } from "./../utils/StateManager";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { AnimeData } from "../@types";
 import Console from "@tdanks2000/fancyconsolelog";
@@ -5,9 +6,25 @@ const console = new Console();
 type Data = AnimeData;
 
 export class Database extends PrismaClient {
-  constructor() {
+  private stateManager: StateManager;
+
+  constructor(stateManager: StateManager) {
     super();
+    this.stateManager = stateManager;
   }
+
+  public fillOldIds = async () => {
+    const db = this.animeV2;
+
+    const data = await db.findMany();
+
+    if (!data) return;
+
+    this.stateManager.clearOldIds();
+    for await (const anime of data) {
+      this.stateManager.oldIds.set(anime.anilist_id, anime);
+    }
+  };
 
   public FillWithData = async (data: Data) => {
     const findById = await this.animeV2.findFirst({

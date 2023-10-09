@@ -12,11 +12,10 @@ export class Mapping {
   async startMapping() {
     const mapping = await MappingClass.create(this.stateManager);
 
+    await mapping.start();
     cron.schedule("0 0 * * MON", async () => {
       if (this.stateManager.running === true) return;
       c.info("it is now a monday, going through the list again");
-
-      await mapping.start();
     });
   }
 }

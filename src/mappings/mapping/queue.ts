@@ -1,5 +1,5 @@
 import ms from "ms";
-import { StateManager, delay, getTitle } from "../utils";
+import { StateManager, areObjectsSame, delay, getTitle } from "../utils";
 import Anilist from "../modules/meta/anilist";
 import { MappingUtils } from "./utils";
 import Console from "@tdanks2000/fancyconsolelog";
@@ -19,13 +19,14 @@ class MappingQueueHandler {
 
   private delay: number = ms("7s");
 
-  private database: Database = new Database();
+  private database: Database;
   private idManager: IdManager;
 
   private stateManager: StateManager;
 
   constructor(stateManager: StateManager) {
     this.idManager = new IdManager(stateManager);
+    this.database = new Database(stateManager);
     this.stateManager = stateManager;
   }
 
@@ -48,10 +49,6 @@ class MappingQueueHandler {
 
   get running() {
     return this.stateManager.running;
-  }
-
-  set running(bool: boolean) {
-    this.running = bool;
   }
 
   add(id: string) {
@@ -104,7 +101,8 @@ class MappingQueueHandler {
     // if (!this.mappingFN) throw new Error("Mapping Function is not defined");
     if (this.paused || this.queue.size <= 0) return;
 
-    this.running = true;
+    this.stateManager.start();
+    await this.database.fillOldIds();
 
     // go through the queue
     for await (const id of this.queue) {
@@ -129,17 +127,33 @@ class MappingQueueHandler {
 
         const matches = await this.match(searchFrom, searchFromTitle[0]);
 
-        await this.database
-          .FillWithData({
-            anilist_id: searchFrom.id!,
-            mal_id: searchFrom.malId!,
-            title: searchFromTitle,
-            year: searchFrom.year.toString(),
-            mappings: matches,
-          })
-          .catch((err) => {
-            c.error(err);
-          });
+        const oldId = this.stateManager.getOldId(id);
+        if (oldId) {
+          // check if mappings are diffrent
+          const oldMatches = oldId.mappings;
+          if (!areObjectsSame(oldMatches, matches)) {
+            this.database.addMappings({
+              anilist_id: oldId.anilist_id,
+              mal_id: oldId.mal_id!,
+              title: oldId.title,
+              year: oldId.year,
+              mappings: matches,
+            });
+            c.info(`Updated mappings for ID ${oldId.anilist_id}`);
+          }
+        } else {
+          await this.database
+            .FillWithData({
+              anilist_id: searchFrom.id!,
+              mal_id: searchFrom.malId!,
+              title: searchFromTitle,
+              year: searchFrom.year.toString(),
+              mappings: matches,
+            })
+            .catch((err) => {
+              c.error(err);
+            });
+        }
 
         this.idManager.updateId(id);
         this.queue.delete(id);
@@ -155,7 +169,7 @@ class MappingQueueHandler {
       }
     }
 
-    this.running = false;
+    this.stateManager.stop();
   }
 }
 
