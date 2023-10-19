@@ -43,7 +43,7 @@ class IdManager {
 
     if (!fs.existsSync(this.idsFilePath)) {
       let { data: ids } = await axios.get(
-        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+        "https://raw.githubusercontent.com/TDanks2000/anilistIds/main/anime_ids.txt"
       );
       fs.writeFileSync(this.idsFilePath, ids, "utf-8");
     }
@@ -74,7 +74,7 @@ class IdManager {
 
     if (!fs.existsSync(this.idsFilePath)) {
       const { data: ids } = await axios.get(
-        "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+        "https://raw.githubusercontent.com/TDanks2000/anilistIds/main/anime_ids.txt"
       );
       this.writeFileContent(this.idsFilePath, ids);
     }
@@ -98,7 +98,7 @@ class IdManager {
     const queue = new MappingQueueHandler(this.stateManager);
 
     let { data: ids_GH } = await axios.get(
-      "https://raw.githubusercontent.com/inumakieu/IDFetch/main/ids.txt"
+      "https://raw.githubusercontent.com/TDanks2000/anilistIds/main/anime_ids.txt"
     );
     fs.writeFileSync(this.idsFilePath, ids_GH);
 

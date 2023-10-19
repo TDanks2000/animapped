@@ -132,3 +132,7 @@ dist
 last_id.*
 /last_id.*
 last_id.txt
+
+ids.*
+/ids.*
+ids.txt

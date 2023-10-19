@@ -12,6 +12,8 @@ export class Mapping {
   async startMapping() {
     const mapping = await MappingClass.create(this.stateManager);
 
+    await mapping.start();
+
     setInterval(async () => {
       if (this.stateManager.running === true) return;
       c.info(

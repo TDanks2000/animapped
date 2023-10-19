@@ -4,8 +4,14 @@ export enum ModuleIds {
   Kickassanime = "1",
   Gogoanime = "2",
   Aniwatch = "3",
+  AnimePahe = "4",
 
   Anilist = "10",
+}
+
+export enum MangaModuleIds {
+  MangaSee = "4",
+  ComicK = "5",
 }
 
 export type AnimeModuleInfo = Pick<

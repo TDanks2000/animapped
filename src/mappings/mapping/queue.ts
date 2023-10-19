@@ -60,6 +60,7 @@ class MappingQueueHandler {
       gogoanime: null,
       kickassanime: null,
       aniwatch: null,
+      animepahe: null,
     };
 
     for await (const Module of this.modules.anime) {

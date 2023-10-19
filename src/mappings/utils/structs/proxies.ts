@@ -1,14 +1,19 @@
 import axios from "axios";
 import { Proxy } from "../../@types";
+import ms from "ms";
 
 class Proxies {
   private protocol: "http" | "https" = "http";
   proxies: Set<string> = new Set();
 
-  constructor() {}
+  constructor() {
+    setInterval(async () => {
+      await this.update();
+    }, ms("5 hours"));
+  }
 
   private async get(): Promise<string[]> {
-    const url = `https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/${this.protocol}.txt`;
+    const url = `https://raw.githubusercontent.com/prxchk/proxy-list/main/${this.protocol}.txt`;
 
     const { data } = await axios.get(url);
     const proxies = data.split("\n");
@@ -21,19 +26,25 @@ class Proxies {
     this.proxies = new Set(proxies);
   }
 
-  async start() {
-    await this.update();
-    setInterval(async () => {
-      await this.update();
-    }, 1000 * 60 * 60 * 5);
-  }
-
   getRandomProxy(): Proxy {
     let items = Array.from(this.proxies);
     const proxy = items[Math.floor(Math.random() * items.length)];
 
-    return `${this.protocol}://${proxy}`;
+    const ip = proxy.split(":")[0];
+    const port = proxy.split(":")[1];
+
+    return {
+      host: ip,
+      port: parseInt(port),
+      protocol: this.protocol,
+    };
+  }
+
+  async renove(proxy: string) {
+    this.proxies.delete(proxy);
   }
 }
 
-export { Proxies };
+const proxy = new Proxies();
+
+export { proxy, Proxies };

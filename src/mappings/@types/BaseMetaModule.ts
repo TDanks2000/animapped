@@ -5,5 +5,5 @@ export abstract class BaseMetaModule {
   abstract name: string;
   abstract url: string;
 
-  abstract search(keyword: string): Promise<AnimeModuleInfo[] | undefined>;
+  abstract search(keyword: string, page?: number): Promise<AnimeModuleInfo[] | undefined>;
 }

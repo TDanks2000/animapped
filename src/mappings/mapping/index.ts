@@ -22,7 +22,7 @@ class Mapping {
   constructor(timeout_time: number | string = "4s", stateManager: StateManager) {
     this.idManager = new IdManager(stateManager);
     this.stateManager = stateManager;
-    this.proxies.start();
+    this.proxies.update();
     this.timeout_time = typeof timeout_time === "string" ? ms(timeout_time) : timeout_time;
   }
 

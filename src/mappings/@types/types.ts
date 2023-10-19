@@ -1,6 +1,7 @@
 import { BaseAnimeModule } from "./BaseAnimeModule";
+import { BaseMangaModule } from "./BaseMangaModule";
 import { BaseMetaModule } from "./BaseMetaModule";
-import { ModuleIds } from "./Modules";
+import { MangaModuleIds, ModuleIds } from "./Modules";
 
 export const enum VoiceType {
   DUB = "dub",
@@ -14,7 +15,7 @@ export interface ModuleResult {
   year: number;
   format?: Format;
   image?: string | null;
-  moduleId?: ModuleIds;
+  moduleId?: ModuleIds | MangaModuleIds;
 }
 
 export const Formats = [
@@ -144,6 +145,11 @@ export type TitleType = string | ITitleLanguageOptions;
 export interface ModuleList {
   anime: BaseAnimeModule[];
   meta: BaseMetaModule[];
+  manga: BaseMangaModule[];
 }
 
-export type Proxy = string;
+export type Proxy = {
+  host: string;
+  port: number;
+  protocol: string;
+};
