@@ -73,21 +73,21 @@ export class Database extends PrismaClient {
 
     return;
 
-    await this.animeV2.deleteMany({
-      where: {
-        anilist_id: data?.anilist_id,
-      },
-    });
+    // await this.animeV2.deleteMany({
+    //   where: {
+    //     anilist_id: data?.anilist_id,
+    //   },
+    // });
 
-    await this.animeV2.create({
-      data: {
-        anilist_id: data.anilist_id,
-        title: data.title,
-        year: data.year,
-        mal_id: data.mal_id,
-        mappings: data.mappings,
-      },
-    });
+    // await this.animeV2.create({
+    //   data: {
+    //     anilist_id: data.anilist_id,
+    //     title: data.title,
+    //     year: data.year,
+    //     mal_id: data.mal_id,
+    //     mappings: data.mappings,
+    //   },
+    // });
   };
 }
 
