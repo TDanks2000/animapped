@@ -133,6 +133,7 @@ class MappingQueueHandler {
           // check if mappings are diffrent
           const oldMatches = oldId.mappings;
           if (!areObjectsSame(oldMatches, matches)) {
+            console.log(matches);
             this.database.addMappings({
               anilist_id: oldId.anilist_id,
               mal_id: oldId.mal_id!,
