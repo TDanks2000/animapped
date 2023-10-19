@@ -118,7 +118,7 @@ export class MappingUtils {
         for await (const item of searchThrough!) {
           let title = item.title?.toLowerCase() ?? item.altTitles!?.[0]?.toLowerCase();
 
-          if (!title || !searchFromTitle) return;
+          if (!title || !searchFromTitle) continue;
           title = cleanTitle(title);
           const distanceFrom = distance(searchFromTitle, title);
           if (distanceFrom <= parseInt(process.env.DISTANCE!))
@@ -131,7 +131,7 @@ export class MappingUtils {
         break;
       case "year":
         for await (const item of this.matches!) {
-          if (item.year <= 0 || isNaN(item.year)) return;
+          if (item.year <= 0 || isNaN(item.year)) continue;
           if (item.year === this.search_from.year) newMatches.push(item);
         }
         if (newMatches.length > 0) this.matches = newMatches;
