@@ -1,14 +1,13 @@
-import { closest, distance } from "fastest-levenshtein";
+import { distance } from "fastest-levenshtein";
 import {
   AnimeModuleInfo,
   BaseAnimeModule,
   MediaStatus,
-  ModuleIds,
   ModuleResult,
   SearchingFor,
   TitleLanguageOptions,
 } from "../@types";
-import { cleanTitle, delay, getTitle } from "../utils";
+import { cleanTitle, getTitle } from "../utils";
 import Console from "@tdanks2000/fancyconsolelog";
 
 const console = new Console();
@@ -28,7 +27,7 @@ export class MappingUtils {
 
   async matchMedia() {
     const start = new Date(Date.now());
-    let language: TitleLanguageOptions = "romaji";
+    let language: TitleLanguageOptions = "english";
     let title = (await getTitle(this.search_from.title, language))!;
 
     if (this.search_from.status?.toLowerCase() === MediaStatus.NOT_YET_RELEASED.toLowerCase()) {
@@ -46,7 +45,7 @@ export class MappingUtils {
     if (!searchThrough) return;
 
     console.info(`Searching ${this.module.name} for ${title}`);
-    await this.search("title", searchThrough);
+    await this.search("title", searchThrough, { cleanTitle: false });
     await this.search("year", searchThrough, { titleLanguage: language });
 
     if (
@@ -54,14 +53,15 @@ export class MappingUtils {
       this.matches.length <= 0 ||
       (this.module.doesDubHaveSeprateID && this.matches.length < 2)
     ) {
-      language = "english";
-      title = cleanTitle((await getTitle(this.search_from.title, language))!);
+      language = "romaji";
+      title = (await getTitle(this.search_from.title, language))!;
       try {
         searchThrough = await this.module.search(title).catch();
       } catch (error) {
         console.error(error);
       }
       await this.search("title", searchThrough!, { titleLanguage: language });
+      await this.search("year", searchThrough!, { titleLanguage: language });
     }
 
     if (this.matches.length > 2 && this.search_from.format) {
@@ -106,8 +106,11 @@ export class MappingUtils {
   async search(
     searching_for: SearchingFor = "title",
     searchThrough: ModuleResult[],
-    extraData?: {
+    extraData: {
       titleLanguage?: TitleLanguageOptions;
+      cleanTitle?: boolean;
+    } = {
+      cleanTitle: true,
     }
   ) {
     let newMatches: MATCHES[] = [];
@@ -119,7 +122,7 @@ export class MappingUtils {
           let title = item.title?.toLowerCase() ?? item.altTitles!?.[0]?.toLowerCase();
 
           if (!title || !searchFromTitle) continue;
-          title = cleanTitle(title);
+          if (extraData?.cleanTitle === true) title = cleanTitle(title);
           const distanceFrom = distance(searchFromTitle, title);
           if (distanceFrom <= parseInt(process.env.DISTANCE!))
             this.matches.push({
@@ -130,22 +133,18 @@ export class MappingUtils {
 
         break;
       case "year":
-        for await (const item of this.matches!) {
-          if (item.year <= 0 || isNaN(item.year)) continue;
-          if (item.year === this.search_from.year) newMatches.push(item);
-        }
-        if (newMatches.length > 0) this.matches = newMatches;
+        this.matches = this.matches.filter((item) => {
+          if (item.year <= 0 || isNaN(item.year)) return true;
+          return item.year > 0 && !isNaN(item.year) && item.year === this.search_from.year;
+        });
         break;
       case "format":
-        for await (const item of this.matches!) {
-          if (!item.format) continue;
-          const distanceFrom = distance(
-            item.format?.toLowerCase()!,
-            this.search_from.format?.toLowerCase()
+        this.matches = this.matches.filter((item) => {
+          return (
+            item.format && item.format.toLowerCase() === this.search_from.format?.toLowerCase()
           );
-          if (distanceFrom <= 6) newMatches.push(item);
-        }
-        if (newMatches.length > 0) this.matches = newMatches;
+        });
+        break;
       default:
         break;
     }

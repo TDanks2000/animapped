@@ -98,7 +98,7 @@ class MappingQueueHandler {
     return await map.matchMedia();
   }
 
-  async start() {
+  async start(testing: boolean = false) {
     // if (!this.mappingFN) throw new Error("Mapping Function is not defined");
     if (this.paused || this.queue.size <= 0) return;
 
@@ -128,41 +128,49 @@ class MappingQueueHandler {
 
         const matches = await this.match(searchFrom, searchFromTitle[0]);
 
-        const oldId = this.stateManager.getOldId(id);
-        if (oldId) {
-          // check if mappings are diffrent
-          const oldMatches = oldId.mappings;
-          if (!areObjectsSame(oldMatches, matches)) {
-            this.database.addMappings({
-              anilist_id: oldId.anilist_id,
-              mal_id: oldId.mal_id!,
-              title: oldId.title,
-              year: oldId.year,
-              mappings: matches,
-            });
-            c.info(`Updated mappings for ID ${oldId.anilist_id}`);
+        if (testing) {
+          console.log(matches);
+        }
+
+        if (testing === false) {
+          const oldId = this.stateManager.getOldId(id);
+          if (oldId) {
+            // check if mappings are diffrent
+            const oldMatches = oldId.mappings;
+            if (!areObjectsSame(oldMatches, matches)) {
+              this.database.addMappings({
+                anilist_id: oldId.anilist_id,
+                mal_id: oldId.mal_id!,
+                title: oldId.title,
+                year: oldId.year,
+                mappings: matches,
+              });
+              c.info(`Updated mappings for ID ${oldId.anilist_id}`);
+            }
+          } else {
+            await this.database
+              .FillWithData({
+                anilist_id: searchFrom.id!,
+                mal_id: searchFrom.malId!,
+                title: searchFromTitle,
+                year: searchFrom.year.toString(),
+                mappings: matches,
+              })
+              .catch((err) => {
+                c.error(err);
+              });
           }
-        } else {
-          await this.database
-            .FillWithData({
-              anilist_id: searchFrom.id!,
-              mal_id: searchFrom.malId!,
-              title: searchFromTitle,
-              year: searchFrom.year.toString(),
-              mappings: matches,
-            })
-            .catch((err) => {
-              c.error(err);
-            });
         }
 
         this.idManager.updateId(id);
         this.queue.delete(id);
 
-        c.warn(`Delaying for ${ms(this.delay, { long: true })} before next request`);
-        await delay(this.delay);
+        if (testing === false) {
+          c.warn(`Delaying for ${ms(this.delay, { long: true })} before next request`);
+          await delay(this.delay);
 
-        c.info(`Finished delaying for ${ms(this.delay, { long: true })}. Starting next request`);
+          c.info(`Finished delaying for ${ms(this.delay, { long: true })}. Starting next request`);
+        }
       } catch (error) {
         c.warn(`Error processing ID ${id}:`);
         c.error((error as Error).message);

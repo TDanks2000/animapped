@@ -41,25 +41,15 @@ class Mapping {
     await this.idManager.goThroughList();
   }
 
-  // async test(custom_id?: string) {
-  //   const id = custom_id || this.last_id;
-
-  //   const searchFrom = await this.anilist.getMedia(id);
-  //   if (!searchFrom) return null;
-  //   let searchFromTitle = (await getTitle(searchFrom?.title)) || [];
-  //   if (!searchFromTitle.length) return null;
-
-  //   if (!searchFrom.year) return "no year";
-
-  //   const matches = await this.match(searchFrom, searchFromTitle[0]);
-
-  //   return matches;
-  // }
+  async test(custom_id: string) {
+    return await this.idManager.test(custom_id);
+  }
 }
 
 // (async () => {
-//   const mapping = await Mapping.create();
-//   const matches = await mapping.test("113415");
+//   const stateManager: StateManager = new StateManager();
+//   const mapping = await Mapping.create(stateManager);
+//   const matches = await mapping.test("158927");
 
 //   process.exit(1);
 // })();

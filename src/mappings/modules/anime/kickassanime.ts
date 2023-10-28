@@ -34,10 +34,11 @@ class Kickassanime extends BaseAnimeModule {
       timeout: 10000,
       url: `${this.url}/api/search`,
       headers: this.headers,
-      data: JSON.stringify({
+      data: {
         query: keyword,
-      }),
+      },
     });
+
     data.forEach((item: any) => {
       searchResult.push({
         id: item.slug,

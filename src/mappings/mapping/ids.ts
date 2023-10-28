@@ -117,6 +117,12 @@ class IdManager {
 
     await queue.start();
   }
+
+  public async test(id: string) {
+    const queue = new MappingQueueHandler(this.stateManager);
+    queue.add(id);
+    await queue.start(true);
+  }
 }
 
 // (async () => {
