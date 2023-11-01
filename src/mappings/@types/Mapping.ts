@@ -5,6 +5,7 @@ export type Matches = {
   kickassanime: MatchItem | null;
   aniwatch: MatchItem | null;
   animepahe: MatchItem | null;
+  allanime: MatchItem | null;
   [moduleName: string]: MatchItem | null;
 };
 

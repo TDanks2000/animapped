@@ -9,6 +9,7 @@ export const MODULES: ModuleList = {
     new Anime.Gogoanime(),
     new Anime.Aniwatch(),
     new Anime.AnimePahe(),
+    new Anime.AllAnime(),
   ],
   meta: [new Meta.Anilist()],
   manga: [new Manga.MangaSee()],

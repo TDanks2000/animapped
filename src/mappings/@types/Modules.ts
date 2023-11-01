@@ -5,6 +5,7 @@ export enum ModuleIds {
   Gogoanime = "2",
   Aniwatch = "3",
   AnimePahe = "4",
+  AllAnime = "6",
 
   Anilist = "10",
 }
